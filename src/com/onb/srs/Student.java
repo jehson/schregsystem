@@ -23,7 +23,7 @@ public class Student {
 		status = Status.NEW;
 	}
 	
-	public Curriculum getCurriculum(){
+	public Curriculum getCurriculum() {
 		return curriculum;
 	}
 	
