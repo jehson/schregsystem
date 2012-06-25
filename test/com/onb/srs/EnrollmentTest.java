@@ -34,6 +34,7 @@ public class EnrollmentTest {
 	ClassCard cc2;
 
 	EnrollmentForm firstTermEnrollmentForm;
+	private Teacher mrMeerkat;
 	
 	@Before
 	public void setUp() throws DuplicateSectionException, ScheduleConflictException {
@@ -92,11 +93,59 @@ public class EnrollmentTest {
 	@Test (expected = UnderloadException.class)
 	public void underloadIsNotAllowed() throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException, DuplicateClassCardException, ScheduleConflictException{
 		assertEquals(0, student.getNumberOfEnrollmentForms());
+		
 		student.startEnrollment();
 		firstTermEnrollmentForm.addClassCard(cc1);
+		
 		student.addNewEnrollmentForm(firstTermEnrollmentForm);
 		assertEquals(0, student.getNumberOfEnrollmentForms());
 	}
 	
+	@Test (expected = OverloadException.class)
+	public void overloadIsNotAllowed() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException {
+		assertEquals(0, student.getNumberOfEnrollmentForms());
+		addTooManyClasscardsToEnrollmentForm();
+		student.addNewEnrollmentForm(firstTermEnrollmentForm);
+		assertEquals(0, student.getNumberOfEnrollmentForms());
+	}
 	
+	private void addTooManyClasscardsToEnrollmentForm() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException {
+		student.startEnrollment();
+		firstTermEnrollmentForm.addClassCard(cc1); 
+		
+		Subject psy1 = new Subject("Psychology 1");
+		Subject phlo1 = new Subject("Philosophy 1");
+		Subject eng1 = new Subject("English 1");
+		Subject bio1 = new Subject("Biology 1");
+		Subject hist1 = new Subject("History 1");
+		Subject frch1 = new Subject("French 1");
+		
+		Schedule tuesdayAtEightThirty = new Schedule(DaySlot.TueFri, TimeSlot.EightThirtyToTen);
+		Schedule tuesdayAtTen = new Schedule(DaySlot.TueFri, TimeSlot.TenToElevenThirty);
+		Schedule tuesdayAtElevenThirty = new Schedule(DaySlot.TueFri, TimeSlot.ElevenThirtyToOne);
+		Schedule tuesdayAtOne = new Schedule(DaySlot.TueFri, TimeSlot.OneToTwoThirty);
+		Schedule tuesdayAtTwoThirty = new Schedule(DaySlot.TueFri, TimeSlot.TwoThirtyToFour);
+		Schedule tuesdayAtFour = new Schedule(DaySlot.TueFri, TimeSlot.FourToFiveThirty);
+		
+		Section psy1Section = new Section(10, psy1, tuesdayAtEightThirty, mrNarwhal);
+		Section phlo1Section = new Section(11, phlo1, tuesdayAtTen, mrNarwhal);
+		Section eng1Section = new Section(12, eng1, tuesdayAtElevenThirty, mrNarwhal);
+		Section bio1Section = new Section(13, bio1, tuesdayAtOne, mrNarwhal);
+		Section hist1Section = new Section(14, hist1, tuesdayAtTwoThirty, mrNarwhal);
+		Section frch1Section = new Section(15, frch1, tuesdayAtFour, mrNarwhal);
+		
+		ClassCard cc3 = new ClassCard(3, student, psy1Section);
+		ClassCard cc4 = new ClassCard(4, student, phlo1Section);
+		ClassCard cc5 = new ClassCard(5, student, eng1Section);
+		ClassCard cc6 = new ClassCard(6, student, bio1Section);
+		ClassCard cc7 = new ClassCard(7, student, hist1Section);
+		ClassCard cc8 = new ClassCard(8, student, frch1Section);
+		
+		firstTermEnrollmentForm.addClassCard(cc3);
+		firstTermEnrollmentForm.addClassCard(cc4);
+		firstTermEnrollmentForm.addClassCard(cc5);
+		firstTermEnrollmentForm.addClassCard(cc6);
+		firstTermEnrollmentForm.addClassCard(cc7);
+		firstTermEnrollmentForm.addClassCard(cc8);
+	}
 }
