@@ -17,6 +17,8 @@ public class EnrollmentTest {
 	
 	Subject math1;
 	Subject math2;
+	Subject eng1;
+	
 	
 	Curriculum bsmath;
 	Student student;
@@ -28,39 +30,40 @@ public class EnrollmentTest {
 	ClassCard cc1;
 	ClassCard cc2;
 
-	EnrollmentForm enrollmentForm1;
+	EnrollmentForm firstTermEnrollmentForm;
 	
 	@Before
 	public void setUp() throws DuplicateSectionException, ScheduleConflictException {
-		mrNarwhal = new Teacher(001);
-		mrOcelot = new Teacher(002);
-		math1 = new Subject("Math 1");
-		math2 = new Subject("Math 2", math1);
-		
 		bsmath = new Curriculum("BS Math", math1, math2);
 		student = new Student(1, bsmath);
+		
+		mrNarwhal = new Teacher(001);
+		mrOcelot = new Teacher(002);
+		
+		math1 = new Subject("Math 1");
+		math2 = new Subject("Math 2", math1);
+		eng1 = new Subject("English 1");
 		
 		schedule = new Schedule(DaySlot.MonThu, TimeSlot.EightThirtyToTen);
 		
 		math1SectionA = new Section(1, math1, schedule, mrNarwhal);
-		math2SectionA = new Section(2, math2, schedule, mrOcelot);
+		math2SectionA = new Section(2, eng1, schedule, mrOcelot);
 		
 		cc1 = new ClassCard(1, student, math1SectionA);
 		cc2 = new ClassCard(2, student, math2SectionA);
 
-		enrollmentForm1 = new EnrollmentForm(1, student);
+		firstTermEnrollmentForm = new EnrollmentForm(1, student);
 	}
 	
 	@Test (expected = ScheduleConflictException.class)
 	public void ScheduleConflict() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException {		
 		student.startEnrollment();
-		enrollmentForm1.addClassCard(cc1);
-		enrollmentForm1.addClassCard(cc2); //throws ScheduleConflictException
+		firstTermEnrollmentForm.addClassCard(cc1);
+		firstTermEnrollmentForm.addClassCard(cc2); //throws ScheduleConflictException
 		
 		//student.addNewEnrollmentForm(enrollmentForm1);
 		//assertEquals(Status.NEW, student.getStatus());
 		//assertEquals(1, student.getNumberOfEnrollmentForms());
-	}
-	
+	} 
 	
 }
