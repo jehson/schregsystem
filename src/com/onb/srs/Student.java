@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.onb.srs.exceptions.IneligibleStudentException;
 import com.onb.srs.exceptions.NoClassCardException;
+import com.onb.srs.exceptions.OverloadException;
+import com.onb.srs.exceptions.UnderloadException;
 
 public class Student {
 
@@ -44,7 +46,7 @@ public class Student {
 		this.status = Status.changeStatus(this);
 	}
 
-	public void addNewEnrollmentForm(EnrollmentForm enrollmentForm) throws IneligibleStudentException, NoClassCardException{
+	public void addNewEnrollmentForm(EnrollmentForm enrollmentForm) throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException{
 		if(status.isEligible()){
 			enrollmentForm.validate();
 			enrollmentForms.add(enrollmentForm);

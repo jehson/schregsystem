@@ -9,8 +9,10 @@ import com.onb.srs.exceptions.DuplicateClassCardException;
 import com.onb.srs.exceptions.DuplicateSectionException;
 import com.onb.srs.exceptions.IneligibleStudentException;
 import com.onb.srs.exceptions.NoClassCardException;
+import com.onb.srs.exceptions.OverloadException;
 import com.onb.srs.exceptions.ScheduleConflictException;
 import com.onb.srs.exceptions.SectionLimitExceededException;
+import com.onb.srs.exceptions.UnderloadException;
 
 public class EnrollmentTest {
 	Teacher mrNarwhal;
@@ -78,13 +80,23 @@ public class EnrollmentTest {
 		EnrollmentForm anotherFirstTermEnrollmentForm;
 		ClassCard anotherClassCard;
 		
-			for (int a = 0; a < 40; a++) {
-				anotherStudent = new Student(a, bsMath);
-				anotherStudent.startEnrollment();
-				anotherFirstTermEnrollmentForm = new EnrollmentForm(a, anotherStudent);
-				anotherClassCard = new ClassCard(a);
-				math1SectionA.addClassCard(anotherClassCard);
-			}
+		for (int a = 0; a < 40; a++) {
+			anotherStudent = new Student(a, bsMath);
+			anotherStudent.startEnrollment();
+			anotherFirstTermEnrollmentForm = new EnrollmentForm(a, anotherStudent);
+			anotherClassCard = new ClassCard(a);
+			math1SectionA.addClassCard(anotherClassCard);
+		}
 	}
+	
+	@Test (expected = UnderloadException.class)
+	public void underloadIsNotAllowed() throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException, DuplicateClassCardException, ScheduleConflictException{
+		assertEquals(0, student.getNumberOfEnrollmentForms());
+		student.startEnrollment();
+		firstTermEnrollmentForm.addClassCard(cc1);
+		student.addNewEnrollmentForm(firstTermEnrollmentForm);
+		assertEquals(0, student.getNumberOfEnrollmentForms());
+	}
+	
 	
 }

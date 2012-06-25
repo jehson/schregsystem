@@ -9,7 +9,9 @@ import com.onb.srs.exceptions.DuplicateClassCardException;
 import com.onb.srs.exceptions.DuplicateSectionException;
 import com.onb.srs.exceptions.IneligibleStudentException;
 import com.onb.srs.exceptions.NoClassCardException;
+import com.onb.srs.exceptions.OverloadException;
 import com.onb.srs.exceptions.ScheduleConflictException;
+import com.onb.srs.exceptions.UnderloadException;
 
 public class StatusTest {
 
@@ -23,16 +25,34 @@ public class StatusTest {
 	Subject phys1;
 	Subject phys2;
 	
-	Teacher teacher;
+	Subject psy1;
+	Subject phlo1;
+	Subject eng1;
+	Subject bio1;
+	Subject hist1;
+	Subject frch1;
+	
+	Teacher mrMeerkat;
+	Teacher mrNarwhal;
+	Teacher mrOcelot;
+	Teacher mrPangolin;
+	
 	Curriculum bsmath;
 	Student student;
 	
-	Schedule schedule;
-	Schedule schedule1;
-	Schedule schedule2;
-	Schedule schedule3;
-	Schedule schedule4;
-	Schedule schedule5;
+	Schedule mondayAtEightThirty;
+	Schedule mondayAtTwoThirty;
+	Schedule mondayAtElevenThirty;
+	Schedule mondayAtFour;
+	Schedule mondayAtOne;
+	Schedule mondayAtTen;
+	
+	Schedule tuesdayAtEightThirty;
+	Schedule tuesdayAtTen;
+	Schedule tuesdayAtElevenThirty;
+	Schedule tuesdayAtOne;
+	Schedule tuesdayAtTwoThirty;
+	Schedule tuesdayAtFour;
 	
 	Section math1SectionA;
 	Section math2SectionA;
@@ -43,6 +63,13 @@ public class StatusTest {
 	Section math7SectionA;
 	Section phys1SectionA;
 	Section phys2SectionA;
+	
+	Section psy1Section;
+	Section phlo1Section;
+	Section eng1Section;
+	Section bio1Section;
+	Section hist1Section;
+	Section frch1Section;
 
 	EnrollmentForm enrollmentForm1;
 	EnrollmentForm enrollmentForm2;
@@ -59,6 +86,12 @@ public class StatusTest {
 	ClassCard cc7;
 	ClassCard cc8;
 	ClassCard cc9;
+	ClassCard cc10;
+	ClassCard cc11;
+	ClassCard cc12;
+	ClassCard cc13;
+	ClassCard cc14;
+	ClassCard cc15;
 	
 	@Before
 	public void setUp() throws DuplicateSectionException, ScheduleConflictException{
@@ -71,28 +104,54 @@ public class StatusTest {
 		math7 = new Subject("Math 7", math6);
 		phys1 = new Subject("Physics 1", math1);
 		phys2 = new Subject("Physics 2", math2, phys1);
+		
+		Subject psy1 = new Subject("Psychology 1");
+		Subject phlo1 = new Subject("Philosophy 1");
+		Subject eng1 = new Subject("English 1");
+		Subject bio1 = new Subject("Biology 1");
+		Subject hist1 = new Subject("History 1");
+		Subject frch1 = new Subject("French 1");
 
 
-		teacher = new Teacher(1);
+		mrMeerkat = new Teacher(1);
+		mrNarwhal = new Teacher(2);
+		mrOcelot = new Teacher(3);
+		mrPangolin = new Teacher(4);
+		
 		bsmath = new Curriculum("BS Math", math1, math2, phys1, phys2, math3, math4, math5, math6, math7);
 		student = new Student(1, bsmath);
 		
-		schedule = new Schedule(DaySlot.MonThu, TimeSlot.EightThirtyToTen);
-		schedule1 = new Schedule(DaySlot.MonThu, TimeSlot.TwoThirtyToFour);
-		schedule2 = new Schedule(DaySlot.MonThu, TimeSlot.ElevenThirtyToOne);
-		schedule3 = new Schedule(DaySlot.MonThu, TimeSlot.FourToFiveThirty);
-		schedule4 = new Schedule(DaySlot.MonThu, TimeSlot.OneToTwoThirty);
-		schedule5 = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
+		mondayAtEightThirty = new Schedule(DaySlot.MonThu, TimeSlot.EightThirtyToTen);
+		mondayAtTen = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
+		mondayAtElevenThirty = new Schedule(DaySlot.MonThu, TimeSlot.ElevenThirtyToOne);
+		mondayAtOne = new Schedule(DaySlot.MonThu, TimeSlot.OneToTwoThirty);
+		mondayAtTwoThirty = new Schedule(DaySlot.MonThu, TimeSlot.TwoThirtyToFour);
+		mondayAtFour = new Schedule(DaySlot.MonThu, TimeSlot.FourToFiveThirty);
 		
-		math1SectionA = new Section(1, math1, schedule, teacher);
-		math2SectionA = new Section(2, math2, schedule2, teacher);
-		math3SectionA = new Section(3, math3, schedule, teacher);
-		math4SectionA = new Section(4, math4, schedule, teacher);
-		math5SectionA = new Section(5, math1, schedule2, teacher);
-		math6SectionA = new Section(6, math2, schedule3, teacher);
-		math7SectionA = new Section(7, math3, schedule4, teacher);
-		phys1SectionA = new Section(8, math4, schedule5, teacher);
-		phys2SectionA = new Section(8, math4, schedule1, teacher);
+		tuesdayAtEightThirty = new Schedule(DaySlot.TueFri, TimeSlot.EightThirtyToTen);
+		tuesdayAtTen = new Schedule(DaySlot.TueFri, TimeSlot.TenToElevenThirty);
+		tuesdayAtElevenThirty = new Schedule(DaySlot.TueFri, TimeSlot.ElevenThirtyToOne);
+		tuesdayAtOne = new Schedule(DaySlot.TueFri, TimeSlot.OneToTwoThirty);
+		tuesdayAtTwoThirty = new Schedule(DaySlot.TueFri, TimeSlot.TwoThirtyToFour);
+		tuesdayAtFour = new Schedule(DaySlot.TueFri, TimeSlot.FourToFiveThirty);
+		
+		
+		math1SectionA = new Section(1, math1, mondayAtEightThirty, mrMeerkat);
+		math2SectionA = new Section(2, math2, mondayAtElevenThirty, mrMeerkat);
+		math3SectionA = new Section(3, math3, mondayAtEightThirty, mrNarwhal);
+		math4SectionA = new Section(4, math4, mondayAtEightThirty, mrOcelot);
+		math5SectionA = new Section(5, math1, mondayAtElevenThirty, mrNarwhal);
+		math6SectionA = new Section(6, math2, mondayAtFour, mrMeerkat);
+		math7SectionA = new Section(7, math3, mondayAtOne, mrMeerkat);
+		phys1SectionA = new Section(8, math4, mondayAtTen, mrMeerkat);
+		phys2SectionA = new Section(9, math4, mondayAtTwoThirty, mrNarwhal);
+		
+		psy1Section = new Section(10, psy1, tuesdayAtEightThirty, mrMeerkat);;
+		phlo1Section = new Section(11, phlo1, tuesdayAtTen, mrMeerkat);
+		eng1Section = new Section(12, eng1, tuesdayAtElevenThirty, mrMeerkat);
+		bio1Section = new Section(13, bio1, tuesdayAtOne, mrMeerkat);
+		hist1Section = new Section(14, hist1, tuesdayAtTwoThirty, mrMeerkat);
+		frch1Section = new Section(15, frch1, tuesdayAtFour, mrMeerkat);
 		
 		
 		enrollmentForm1 = new EnrollmentForm(1, student);
@@ -110,21 +169,38 @@ public class StatusTest {
 		cc7 = new ClassCard(7, student, math7SectionA);
 		cc8 = new ClassCard(8, student, phys1SectionA);
 		cc9 = new ClassCard(9, student, phys2SectionA);
+		
+		cc10 = new ClassCard(10, student, psy1Section);
+		cc11 = new ClassCard(11, student, phlo1Section);
+		cc12 = new ClassCard(12, student, eng1Section);
+		cc13 = new ClassCard(13, student, bio1Section);
+		cc14 = new ClassCard(14, student, hist1Section);
+		cc15 = new ClassCard(15, student, frch1Section);
 	}
 	
 	@Test
-	public void newStudentEnrollment() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException {
+	public void newStudentEnrollment() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, UnderloadException, OverloadException {
 		student.startEnrollment();
-		enrollmentForm1.addClassCard(cc1);
+		add15UnitsWorthOfSubjects();
 		student.addNewEnrollmentForm(enrollmentForm1);
+		
 		assertEquals(Status.NEW, student.getStatus());
 		assertEquals(1, student.getNumberOfEnrollmentForms());
 	}
 	
+	private void add15UnitsWorthOfSubjects() throws DuplicateClassCardException, ScheduleConflictException {
+		enrollmentForm1.addClassCard(cc10);
+		enrollmentForm1.addClassCard(cc11);
+		enrollmentForm1.addClassCard(cc12);
+		enrollmentForm1.addClassCard(cc13);
+		enrollmentForm1.addClassCard(cc14);
+	}
+	
 	@Test 
-	public void continuingStudentEnrollment() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException{
+	public void continuingStudentEnrollment() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, UnderloadException, OverloadException{
+		EnrollmentForm enrollmentForm2 = new EnrollmentForm(2, student);
 		student.startEnrollment();
-		enrollmentForm1.addClassCard(cc1);
+		enrollmentForm2.addClassCard(cc1);
 		student.addNewEnrollmentForm(enrollmentForm1);
 		EnrollmentForm eForm = student.getLastEnrollmentForm();
 		eForm.setGrade(cc1, Grade.AM);
@@ -136,7 +212,7 @@ public class StatusTest {
 	}
 	
 	@Test
-	public void probationaryStudentEnrollment() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException {
+	public void probationaryStudentEnrollment() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException {
 		student.startEnrollment();
 		enrollmentForm1.addClassCard(cc1);
 		student.addNewEnrollmentForm(enrollmentForm1);
@@ -150,7 +226,7 @@ public class StatusTest {
 	}
 	
 	@Test (expected = IneligibleStudentException.class)
-	public void probationaryToIneligibleStudentEnrollment() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException {
+	public void probationaryToIneligibleStudentEnrollment() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException {
 		student.startEnrollment();
 		enrollmentForm1.addClassCard(cc1);
 		student.addNewEnrollmentForm(enrollmentForm1);
@@ -169,7 +245,7 @@ public class StatusTest {
 	}
 	
 	@Test 
-	public void probationaryToContinuingStudentEnrollment() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException {
+	public void probationaryToContinuingStudentEnrollment() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException {
 		student.startEnrollment();
 		enrollmentForm1.addClassCard(cc1);
 		student.addNewEnrollmentForm(enrollmentForm1);
@@ -190,7 +266,7 @@ public class StatusTest {
 	}
 	
 	@Test 
-	public void graduatingStudentEnrollment() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException {
+	public void graduatingStudentEnrollment() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException {
 		student.startEnrollment();
 		enrollmentForm1.addClassCard(cc1);
 		student.addNewEnrollmentForm(enrollmentForm1);
@@ -217,7 +293,7 @@ public class StatusTest {
 	}
 	
 	@Test 
-	public void graduatedStudent() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException {
+	public void graduatedStudent() throws DuplicateClassCardException, ScheduleConflictException, IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException {
 		student.startEnrollment();
 		enrollmentForm1.addClassCard(cc1);
 		student.addNewEnrollmentForm(enrollmentForm1);

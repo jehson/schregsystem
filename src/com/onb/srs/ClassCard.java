@@ -33,4 +33,8 @@ public class ClassCard {
 		return section;
 	}
 	
+	public Subject getSubject() {
+		return section.getSubject();
+	}
+	
 }

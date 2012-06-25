@@ -8,7 +8,9 @@ import java.util.List;
 
 import com.onb.srs.exceptions.DuplicateClassCardException;
 import com.onb.srs.exceptions.NoClassCardException;
+import com.onb.srs.exceptions.OverloadException;
 import com.onb.srs.exceptions.ScheduleConflictException;
+import com.onb.srs.exceptions.UnderloadException;
 
 public class EnrollmentForm {
 	private int id;
@@ -55,12 +57,34 @@ public class EnrollmentForm {
 		return false;
 	}
 	
-	public void validate() throws NoClassCardException{
-		if (classCards.size()==0){
+	public void validate() throws NoClassCardException, UnderloadException, OverloadException {
+		if (classCards.size() == 0){
 			throw new NoClassCardException();
+		} else if (studentIsUnderloaded()) {
+			throw new UnderloadException();
+		} else if (studentIsOverloaded()) {
+			throw new OverloadException();
 		}
+	}	
+	
+	private boolean studentIsUnderloaded() {
+		if (getTotalUnits() < student.getStatus().getMinUnits()) return true;
+		else return false;
+	}
+
+	private boolean studentIsOverloaded() {
+		if (getTotalUnits() > student.getStatus().getMaxUnits()) return true;
+		else return false;
 	}
 	
+	private int getTotalUnits() {
+		int totalUnits = 0;
+		for (ClassCard cc : classCards) {
+			totalUnits += cc.getSubject().getUnits();
+		}
+		return totalUnits;
+	}
+
 	public void setGrade(ClassCard classCard, Grade grade){
 		classCards.remove(classCard);
 		classCard.setGrade(grade);
