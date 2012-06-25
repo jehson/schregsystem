@@ -45,4 +45,9 @@ public class SectionTests {
 		assertNotNull(cs11Section.getSubject());
 		assertNotNull(cs11Section.getSchedule());
 	}
+	
+	@Ignore
+	public void sectionIsAddedToTeacher() {
+		assertEquals(1, teacher.getSections().size());
+	}
 }

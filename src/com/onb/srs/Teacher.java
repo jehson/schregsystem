@@ -25,7 +25,6 @@ public class Teacher {
 					throw new ScheduleConflictException("Schedule of teacher is in conflict.");
 				}
 				sections.add(sectionToAdd);
-				System.out.println("asdf");
 			}
 		}
 	}

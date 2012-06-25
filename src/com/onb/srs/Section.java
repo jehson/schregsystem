@@ -17,17 +17,13 @@ public class Section {
 	private Subject subject;
 	private List<ClassCard> classCards;
 	
-	protected Section(int id){
-		this.id = id;
-		classCards = new ArrayList<ClassCard>();
-	}
-	
 	public Section(int id, Subject subject, Schedule schedule, Teacher teacher) throws DuplicateSectionException, ScheduleConflictException{
-		this(id);
+		teacher.addSection(this);
 		this.subject = subject;
 		this.schedule = schedule;
 		this.teacher = teacher;
-		teacher.addSection(this);
+		this.id = id;
+		classCards = new ArrayList<ClassCard>();
 	}
 		
 	public void addClassCard(ClassCard classCard) throws SectionLimitExceededException, DuplicateClassCardException{
