@@ -17,16 +17,16 @@ public class Section {
 	private Subject subject;
 	private List<ClassCard> classCards;
 	
-	public Section(int id, Subject subject, Schedule schedule, Teacher teacher) throws DuplicateSectionException, ScheduleConflictException{
-		teacher.addSection(this);
+	public Section(int id, Subject subject, Schedule schedule, Teacher teacher) throws DuplicateSectionException, ScheduleConflictException {
 		this.subject = subject;
 		this.schedule = schedule;
 		this.teacher = teacher;
 		this.id = id;
 		classCards = new ArrayList<ClassCard>();
+		teacher.addSection(this);
 	}
 		
-	public void addClassCard(ClassCard classCard) throws SectionLimitExceededException, DuplicateClassCardException{
+	public void addClassCard(ClassCard classCard) throws SectionLimitExceededException, DuplicateClassCardException {
 		if(classCards.contains(classCard)){
 			throw new DuplicateClassCardException("Two same students/classCards in one section.");
 		} else {

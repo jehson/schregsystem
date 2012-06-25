@@ -20,11 +20,11 @@ public class Teacher {
 			throw new DuplicateSectionException("Teacher already has this section.");
 		}
 		else{
-			for(Section currentSection: sections){
+			for(Section currentSection : this.sections){
 				if(currentSection.equalsSchedule(sectionToAdd)){
 					throw new ScheduleConflictException("Schedule of teacher is in conflict.");
 				}
-				sections.add(sectionToAdd);
+				this.sections.add(sectionToAdd);
 			}
 		}
 	}

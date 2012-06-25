@@ -35,19 +35,19 @@ public class SectionTests {
 		try {
 			Schedule mondayAtTen = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
 			cs11Section = new Section(001, cs11, mondayAtTen, teacher);
-		} catch (ScheduleConflictException e) {}
-		  catch (DuplicateSectionException e) {}
+		} catch (ScheduleConflictException e) { }
+		  catch (DuplicateSectionException e) { }
 	}
 	
 	@Test
-	public void newSectionHasRequirements() {
+	public void newSectioassernHasRequirements() {
 		assertNotNull(cs11Section.getTeacher());
 		assertNotNull(cs11Section.getSubject());
 		assertNotNull(cs11Section.getSchedule());
 	}
 	
-	@Ignore
-	public void sectionIsAddedToTeacher() {
+	@Test
+	public void sectionIsAddedToTeacher() {		
 		assertEquals(1, teacher.getSections().size());
 	}
 }
