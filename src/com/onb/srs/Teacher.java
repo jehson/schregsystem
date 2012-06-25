@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onb.srs.exceptions.DuplicateSectionException;
-import com.onb.srs.exceptions.ScheduleConflictException;
 
 public class Teacher {
 	private int id;
@@ -15,18 +14,20 @@ public class Teacher {
 		this.sections = new ArrayList<Section>();
 	}
 	
-	public void addSection(Section sectionToAdd) throws DuplicateSectionException, ScheduleConflictException{
-		if(sections.contains(sectionToAdd)){
-			throw new DuplicateSectionException("Teacher already has this section.");
+	public void addSection(Section sectionToAdd) {
+		this.sections.add(sectionToAdd);
+	}
+	
+	public boolean hasClassAt(Schedule sched) {
+		for (Section s : sections) {
+			if (s.getSchedule().equals(sched)) return true;
 		}
-		else{
-			for(Section currentSection : this.sections){
-				if(currentSection.equalsSchedule(sectionToAdd)){
-					throw new ScheduleConflictException("Schedule of teacher is in conflict.");
-				}
-				this.sections.add(sectionToAdd);
-			}
-		}
+		return false;
+	}
+	
+	public boolean hasSection(Section section) {
+		if (this.sections.contains(section)) return true;
+		else return false;
 	}
 	
 	public void removeSection(Section section){

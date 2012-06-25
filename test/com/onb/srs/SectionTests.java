@@ -18,6 +18,13 @@ public class SectionTests {
 	Teacher teacher;
 	
 	Section cs11Section;
+	Section cs56Section;
+	
+	Schedule mondayAtTen;
+	Schedule mondayAtElevenThirty;
+	Schedule tuesdayAtEightThirty;
+	Schedule tuesdayAtTen;
+	Schedule tuesdayAtOne;
 	
 	@Before
 	public void setUp() {
@@ -33,21 +40,45 @@ public class SectionTests {
 	
 	private void createFirstSection() {
 		try {
-			Schedule mondayAtTen = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
+			mondayAtTen = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
 			cs11Section = new Section(001, cs11, mondayAtTen, teacher);
 		} catch (ScheduleConflictException e) { }
 		  catch (DuplicateSectionException e) { }
 	}
 	
 	@Test
-	public void newSectioassernHasRequirements() {
+	public void newSectionHasRequirements() {
 		assertNotNull(cs11Section.getTeacher());
 		assertNotNull(cs11Section.getSubject());
 		assertNotNull(cs11Section.getSchedule());
 	}
 	
 	@Test
-	public void sectionIsAddedToTeacher() {		
+	public void newSectionIsAddedToTeacher() {
+		assertEquals(1, teacher.getSections().size());
+		assertTrue(teacher.hasSection(cs11Section));
+	}
+	
+	@Test
+	public void creationOfSectionWithConflictIsAborted() {
+		assertNull(cs56Section);
+		createSectionWithConflict();
+		assertNull(cs56Section);
+	}
+	
+	private void createSectionWithConflict(){
+		try {
+			cs56Section = new Section(002, cs56, mondayAtTen, teacher);
+		} catch (ScheduleConflictException e) { }
+		catch (DuplicateSectionException e) { }
+	}
+	
+	@Test
+	public void sectionWithScheduleConflictIsNotAddedToTeacher(){
+		assertEquals(1, teacher.getSections().size());
+		createSectionWithConflict();
 		assertEquals(1, teacher.getSections().size());
 	}
+	
+	
 }

@@ -18,6 +18,9 @@ public class Section {
 	private List<ClassCard> classCards;
 	
 	public Section(int id, Subject subject, Schedule schedule, Teacher teacher) throws DuplicateSectionException, ScheduleConflictException {
+		if (teacher.hasClassAt(schedule)) {
+			throw new ScheduleConflictException("Teacher already has class at this schedule.");
+		}
 		this.subject = subject;
 		this.schedule = schedule;
 		this.teacher = teacher;
