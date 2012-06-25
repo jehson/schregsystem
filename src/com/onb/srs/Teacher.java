@@ -1,5 +1,6 @@
 package com.onb.srs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.onb.srs.exceptions.DuplicateSectionException;
@@ -11,6 +12,7 @@ public class Teacher {
 	
 	public Teacher(int id){
 		this.id = id;
+		this.sections = new ArrayList<Section>();
 	}
 	
 	public void addSection(Section sectionToAdd) throws DuplicateSectionException, ScheduleConflictException{

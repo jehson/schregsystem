@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.onb.srs.exceptions.DuplicateClassCardException;
+import com.onb.srs.exceptions.DuplicateSectionException;
 import com.onb.srs.exceptions.IneligibleStudentException;
 import com.onb.srs.exceptions.NoClassCardException;
 import com.onb.srs.exceptions.ScheduleConflictException;
@@ -12,7 +13,7 @@ import com.onb.srs.exceptions.ScheduleConflictException;
 public class EnrollmentTest {
 
 	@Test (expected = ScheduleConflictException.class)
-	public void ScheduleConflict() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException {
+	public void ScheduleConflict() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException {
 
 		Teacher teacher = new Teacher(1);
 		Subject math1 = new Subject("Math 1");
@@ -23,8 +24,8 @@ public class EnrollmentTest {
 		
 		Schedule schedule = new Schedule(DaySlot.MonThu, TimeSlot.EightThirtyToTen);
 		
-		Section math1SectionA = new Section(1, math1, schedule);
-		Section math2SectionA = new Section(2, math2, schedule);
+		Section math1SectionA = new Section(1, math1, schedule, teacher);
+		Section math2SectionA = new Section(2, math2, schedule, teacher);
 		
 		ClassCard cc1 = new ClassCard(1, student, math1SectionA);
 		ClassCard cc2 = new ClassCard(2, student, math2SectionA);

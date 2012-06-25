@@ -22,16 +22,14 @@ public class Section {
 		classCards = new ArrayList<ClassCard>();
 	}
 	
-	public Section(int id, Subject subject, Schedule schedule){
+	public Section(int id, Subject subject, Schedule schedule, Teacher teacher) throws DuplicateSectionException, ScheduleConflictException{
 		this(id);
-		this.schedule = schedule;
 		this.subject = subject;
-	}
-	
-	public void assignTeacher(Teacher teacher) throws DuplicateSectionException, ScheduleConflictException{
+		this.schedule = schedule;
+		this.teacher = teacher;
 		teacher.addSection(this);
 	}
-	
+		
 	public void addClassCard(ClassCard classCard) throws SectionLimitExceededException, DuplicateClassCardException{
 		if(classCards.contains(classCard)){
 			throw new DuplicateClassCardException("Two same students/classCards in one section.");
@@ -49,24 +47,12 @@ public class Section {
 		return teacher;
 	}
 
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
-	}
-
 	public Schedule getSchedule() {
 		return schedule;
 	}
 
-	public void setSchedule(Schedule schedule) {
-		this.schedule = schedule;
-	}
-
 	public Subject getSubject() {
 		return subject;
-	}
-
-	public void setSubject(Subject subject) {
-		this.subject = subject;
 	}
 
 	public boolean equalsSchedule(Section section){

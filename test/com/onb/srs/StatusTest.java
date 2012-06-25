@@ -2,63 +2,115 @@ package com.onb.srs;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.onb.srs.exceptions.DuplicateClassCardException;
+import com.onb.srs.exceptions.DuplicateSectionException;
 import com.onb.srs.exceptions.IneligibleStudentException;
 import com.onb.srs.exceptions.NoClassCardException;
 import com.onb.srs.exceptions.ScheduleConflictException;
 
 public class StatusTest {
 
-	Subject math1 = new Subject("Math 1");
-	Subject math2 = new Subject("Math 2", math1);
-	Subject math3 = new Subject("Math 3", math1);
-	Subject math4 = new Subject("Math 4", math3);
-	Subject math5 = new Subject("Math 5", math3);
-	Subject math6 = new Subject("Math 6", math3);
-	Subject math7 = new Subject("Math 7", math6);
-	Subject phys1 = new Subject("Physics 1", math1);
-	Subject phys2 = new Subject("Physics 2", math2, phys1);
+	Subject math1;
+	Subject math2;
+	Subject math3;
+	Subject math4;
+	Subject math5;
+	Subject math6;
+	Subject math7;
+	Subject phys1;
+	Subject phys2;
+	
+	Teacher teacher;
+	Curriculum bsmath;
+	Student student;
+	
+	Schedule schedule;
+	Schedule schedule1;
+	Schedule schedule2;
+	Schedule schedule3;
+	Schedule schedule4;
+	Schedule schedule5;
+	
+	Section math1SectionA;
+	Section math2SectionA;
+	Section math3SectionA;
+	Section math4SectionA;
+	Section math5SectionA;
+	Section math6SectionA;
+	Section math7SectionA;
+	Section phys1SectionA;
+	Section phys2SectionA;
+
+	EnrollmentForm enrollmentForm1;
+	EnrollmentForm enrollmentForm2;
+	EnrollmentForm enrollmentForm3;
+	EnrollmentForm enrollmentForm4;
+	EnrollmentForm enrollmentForm5;
+	
+	ClassCard cc1;
+	ClassCard cc2;
+	ClassCard cc3;
+	ClassCard cc4;
+	ClassCard cc5;
+	ClassCard cc6;
+	ClassCard cc7;
+	ClassCard cc8;
+	ClassCard cc9;
+	
+	@Before
+	public void setUp() throws DuplicateSectionException, ScheduleConflictException{
+		math1 = new Subject("Math 1");
+		math2 = new Subject("Math 2", math1);
+		math3 = new Subject("Math 3", math1);
+		math4 = new Subject("Math 4", math3);
+		math5 = new Subject("Math 5", math3);
+		math6 = new Subject("Math 6", math3);
+		math7 = new Subject("Math 7", math6);
+		phys1 = new Subject("Physics 1", math1);
+		phys2 = new Subject("Physics 2", math2, phys1);
 
 
-	Teacher teacher = new Teacher(1);
-	Curriculum bsmath = new Curriculum("BS Math", math1, math2, phys1, phys2, math3, math4, math5, math6, math7);
-	Student student = new Student(1, bsmath);
-	
-	Schedule schedule = new Schedule(DaySlot.MonThu, TimeSlot.EightThirtyToTen);
-	Schedule schedule1 = new Schedule(DaySlot.MonThu, TimeSlot.TwoThirtyToFour);
-	Schedule schedule2 = new Schedule(DaySlot.MonThu, TimeSlot.ElevenThirtyToOne);
-	Schedule schedule3 = new Schedule(DaySlot.MonThu, TimeSlot.FourToFiveThirty);
-	Schedule schedule4 = new Schedule(DaySlot.MonThu, TimeSlot.OneToTwoThirty);
-	Schedule schedule5 = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
-	
-	Section math1SectionA = new Section(1, math1, schedule);
-	Section math2SectionA = new Section(2, math2, schedule2);
-	Section math3SectionA = new Section(3, math3, schedule);
-	Section math4SectionA = new Section(4, math4, schedule);
-	Section math5SectionA = new Section(5, math1, schedule2);
-	Section math6SectionA = new Section(6, math2, schedule3);
-	Section math7SectionA = new Section(7, math3, schedule4);
-	Section phys1SectionA = new Section(8, math4, schedule5);
-	Section phys2SectionA = new Section(8, math4, schedule1);
-	
-	
-	EnrollmentForm enrollmentForm1 = new EnrollmentForm(1, student);
-	EnrollmentForm enrollmentForm2 = new EnrollmentForm(2, student);
-	EnrollmentForm enrollmentForm3 = new EnrollmentForm(3, student);
-	EnrollmentForm enrollmentForm4 = new EnrollmentForm(4, student);
-	EnrollmentForm enrollmentForm5 = new EnrollmentForm(5, student);
-	
-	ClassCard cc1 = new ClassCard(1, student, math1SectionA);
-	ClassCard cc2 = new ClassCard(2, student, math2SectionA);
-	ClassCard cc3 = new ClassCard(3, student, math3SectionA);
-	ClassCard cc4 = new ClassCard(4, student, math4SectionA);
-	ClassCard cc5 = new ClassCard(5, student, math5SectionA);
-	ClassCard cc6 = new ClassCard(6, student, math6SectionA);
-	ClassCard cc7 = new ClassCard(7, student, math7SectionA);
-	ClassCard cc8 = new ClassCard(8, student, phys1SectionA);
-	ClassCard cc9 = new ClassCard(9, student, phys2SectionA);
+		teacher = new Teacher(1);
+		bsmath = new Curriculum("BS Math", math1, math2, phys1, phys2, math3, math4, math5, math6, math7);
+		student = new Student(1, bsmath);
+		
+		schedule = new Schedule(DaySlot.MonThu, TimeSlot.EightThirtyToTen);
+		schedule1 = new Schedule(DaySlot.MonThu, TimeSlot.TwoThirtyToFour);
+		schedule2 = new Schedule(DaySlot.MonThu, TimeSlot.ElevenThirtyToOne);
+		schedule3 = new Schedule(DaySlot.MonThu, TimeSlot.FourToFiveThirty);
+		schedule4 = new Schedule(DaySlot.MonThu, TimeSlot.OneToTwoThirty);
+		schedule5 = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
+		
+		math1SectionA = new Section(1, math1, schedule, teacher);
+		math2SectionA = new Section(2, math2, schedule2, teacher);
+		math3SectionA = new Section(3, math3, schedule, teacher);
+		math4SectionA = new Section(4, math4, schedule, teacher);
+		math5SectionA = new Section(5, math1, schedule2, teacher);
+		math6SectionA = new Section(6, math2, schedule3, teacher);
+		math7SectionA = new Section(7, math3, schedule4, teacher);
+		phys1SectionA = new Section(8, math4, schedule5, teacher);
+		phys2SectionA = new Section(8, math4, schedule1, teacher);
+		
+		
+		enrollmentForm1 = new EnrollmentForm(1, student);
+		enrollmentForm2 = new EnrollmentForm(2, student);
+		enrollmentForm3 = new EnrollmentForm(3, student);
+		enrollmentForm4 = new EnrollmentForm(4, student);
+		enrollmentForm5 = new EnrollmentForm(5, student);
+		
+		cc1 = new ClassCard(1, student, math1SectionA);
+		cc2 = new ClassCard(2, student, math2SectionA);
+		cc3 = new ClassCard(3, student, math3SectionA);
+		cc4 = new ClassCard(4, student, math4SectionA);
+		cc5 = new ClassCard(5, student, math5SectionA);
+		cc6 = new ClassCard(6, student, math6SectionA);
+		cc7 = new ClassCard(7, student, math7SectionA);
+		cc8 = new ClassCard(8, student, phys1SectionA);
+		cc9 = new ClassCard(9, student, phys2SectionA);
+	}
 	
 	@Test
 	public void newStudentEnrollment() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException {
