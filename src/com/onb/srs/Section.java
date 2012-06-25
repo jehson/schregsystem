@@ -33,7 +33,7 @@ public class Section {
 		if(classCards.contains(classCard)){
 			throw new DuplicateClassCardException("Two same students/classCards in one section.");
 		} else {
-			if(classCards.size() <= MAX_CLASSCARDS){
+			if(classCards.size() < MAX_CLASSCARDS){
 				classCards.add(classCard);
 			}
 			else{
@@ -56,5 +56,9 @@ public class Section {
 
 	public boolean equalsSchedule(Section section){
 		return schedule.equals(section.getSchedule());
+	}
+	
+	public int getNumberOfClassCards() {
+		return classCards.size();
 	}
 }

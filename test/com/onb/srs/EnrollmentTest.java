@@ -10,6 +10,7 @@ import com.onb.srs.exceptions.DuplicateSectionException;
 import com.onb.srs.exceptions.IneligibleStudentException;
 import com.onb.srs.exceptions.NoClassCardException;
 import com.onb.srs.exceptions.ScheduleConflictException;
+import com.onb.srs.exceptions.SectionLimitExceededException;
 
 public class EnrollmentTest {
 	Teacher mrNarwhal;
@@ -20,7 +21,7 @@ public class EnrollmentTest {
 	Subject eng1;
 	
 	
-	Curriculum bsmath;
+	Curriculum bsMath;
 	Student student;
 	Schedule schedule;
 	
@@ -34,8 +35,8 @@ public class EnrollmentTest {
 	
 	@Before
 	public void setUp() throws DuplicateSectionException, ScheduleConflictException {
-		bsmath = new Curriculum("BS Math", math1, math2);
-		student = new Student(1, bsmath);
+		bsMath = new Curriculum("BS Math", math1, math2);
+		student = new Student(1, bsMath);
 		
 		mrNarwhal = new Teacher(001);
 		mrOcelot = new Teacher(002);
@@ -60,10 +61,30 @@ public class EnrollmentTest {
 		student.startEnrollment();
 		firstTermEnrollmentForm.addClassCard(cc1);
 		firstTermEnrollmentForm.addClassCard(cc2); //throws ScheduleConflictException
+	}
+	
+	@Test (expected = SectionLimitExceededException.class)
+	public void tooManyStudentsInSection() throws SectionLimitExceededException, DuplicateClassCardException, IneligibleStudentException{
+		fillUpSection();
 		
-		//student.addNewEnrollmentForm(enrollmentForm1);
-		//assertEquals(Status.NEW, student.getStatus());
-		//assertEquals(1, student.getNumberOfEnrollmentForms());
-	} 
+		Student extraStudent = new Student(41, bsMath);
+		extraStudent.startEnrollment();
+		ClassCard extraClassCard = new ClassCard(41);
+		math1SectionA.addClassCard(extraClassCard);
+	}
+	
+	private void fillUpSection() throws SectionLimitExceededException, DuplicateClassCardException, IneligibleStudentException {
+		Student anotherStudent;
+		EnrollmentForm anotherFirstTermEnrollmentForm;
+		ClassCard anotherClassCard;
+		
+			for (int a = 0; a < 40; a++) {
+				anotherStudent = new Student(a, bsMath);
+				anotherStudent.startEnrollment();
+				anotherFirstTermEnrollmentForm = new EnrollmentForm(a, anotherStudent);
+				anotherClassCard = new ClassCard(a);
+				math1SectionA.addClassCard(anotherClassCard);
+			}
+	}
 	
 }
