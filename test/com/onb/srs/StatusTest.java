@@ -23,7 +23,7 @@ public class StatusTest {
 			subjects[i] = new Subject(String.valueOf(i));
 		}
 		
-		Section[] sections = new Sections[20];
+		Section[] sections = new Section[20];
 		for(int i=0; i<20; i++){
 			sections[i] = new Section[i];
 		}
