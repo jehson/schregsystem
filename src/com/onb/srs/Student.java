@@ -80,4 +80,16 @@ public class Student {
 	public void addPassedSubject(Subject subject){
 		passedSubjects.add(subject);
 	}
+	
+	public boolean hasPassedSubject(Subject subject) {
+		Subject s;
+		for (EnrollmentForm ef : enrollmentForms) {
+			for (ClassCard cc : ef.getClassCards()) {
+				s =  cc.getSubject();
+				
+				if (s == subject && cc.getGrade().isPassing()) return true; 
+			}
+		}
+		return false;	
+	}
 }

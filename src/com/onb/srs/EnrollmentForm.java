@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.onb.srs.exceptions.DuplicateClassCardException;
+import com.onb.srs.exceptions.InsufficientPrerequisitesException;
 import com.onb.srs.exceptions.NoClassCardException;
 import com.onb.srs.exceptions.OverloadException;
 import com.onb.srs.exceptions.ScheduleConflictException;
@@ -22,18 +23,21 @@ public class EnrollmentForm {
 		classCards = new ArrayList<ClassCard>();
 	}
 	
-	protected void addClassCard(ClassCard classCard) throws DuplicateClassCardException, ScheduleConflictException{
-		if(classCards.contains(classCard)){
+	protected void addClassCard(ClassCard classCard) throws DuplicateClassCardException, ScheduleConflictException, InsufficientPrerequisitesException{
+		if (classCards.contains(classCard)){
 			throw new DuplicateClassCardException();
 		}
-		else{
-			if(hasConflict(classCard.getSection())){
-				throw new ScheduleConflictException();
-			}
-			else{
-				classCards.add(classCard);
-			}
+		if (hasConflict(classCard.getSection())) {
+			throw new ScheduleConflictException();
 		}
+		if () {
+			
+		}
+		classCards.add(classCard);
+	}
+	
+	private boolean hasPassedPrerequisitesOf(Subject subject) {
+		
 	}
 		
 	protected List<ClassCard> getClassCards(){

@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.onb.srs.exceptions.DuplicateClassCardException;
 import com.onb.srs.exceptions.DuplicateSectionException;
 import com.onb.srs.exceptions.IneligibleStudentException;
+import com.onb.srs.exceptions.InsufficientPrerequisitesException;
 import com.onb.srs.exceptions.NoClassCardException;
 import com.onb.srs.exceptions.OverloadException;
 import com.onb.srs.exceptions.ScheduleConflictException;
@@ -15,6 +16,21 @@ import com.onb.srs.exceptions.SectionLimitExceededException;
 import com.onb.srs.exceptions.UnderloadException;
 
 public class EnrollmentTest {
+	private Schedule mondayAtEightThirty = new Schedule(DaySlot.MonThu, TimeSlot.EightThirtyToTen);
+	private Schedule mondayAtTen = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
+	private Schedule mondayAtElevenThirty = new Schedule(DaySlot.MonThu, TimeSlot.ElevenThirtyToOne);
+	private Schedule mondayAtOne = new Schedule(DaySlot.MonThu, TimeSlot.OneToTwoThirty);
+	private Schedule mondayAtTwoThirty = new Schedule(DaySlot.MonThu, TimeSlot.TwoThirtyToFour);
+	private Schedule mondayAtFour = new Schedule(DaySlot.MonThu, TimeSlot.FourToFiveThirty);
+	
+	private Schedule tuesdayAtEightThirty = new Schedule(DaySlot.TueFri, TimeSlot.EightThirtyToTen);
+	private Schedule tuesdayAtTen = new Schedule(DaySlot.TueFri, TimeSlot.TenToElevenThirty);
+	private Schedule tuesdayAtElevenThirty = new Schedule(DaySlot.TueFri, TimeSlot.ElevenThirtyToOne);
+	private Schedule tuesdayAtOne = new Schedule(DaySlot.TueFri, TimeSlot.OneToTwoThirty);
+	private Schedule tuesdayAtTwoThirty = new Schedule(DaySlot.TueFri, TimeSlot.TwoThirtyToFour);
+	private Schedule tuesdayAtFour = new Schedule(DaySlot.TueFri, TimeSlot.FourToFiveThirty);
+	
+	
 	private Teacher mrNarwhal;
 	private Teacher mrOcelot;
 	
@@ -25,7 +41,6 @@ public class EnrollmentTest {
 	
 	private Curriculum bsMath;
 	private Student student;
-	private Schedule mondayAtTen;
 
 	private EnrollmentForm firstTermEnrollmentForm;
 	
@@ -39,12 +54,10 @@ public class EnrollmentTest {
 		
 		math1 = new Subject("Math 1");
 		eng1 = new Subject("English 1");
-		
-		mondayAtTen = new Schedule(DaySlot.MonThu, TimeSlot.TenToElevenThirty);
 	}
 	
 	@Test (expected = ScheduleConflictException.class)
-	public void ScheduleConflict() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException {		
+	public void ScheduleConflict() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException, InsufficientPrerequisitesException {		
 		firstTermEnrollmentForm = student.startEnrollment();
 		
 		Section math1Section = new Section(1, math1, mondayAtTen, mrNarwhal);
@@ -81,7 +94,7 @@ public class EnrollmentTest {
 	}
 	
 	@Test (expected = UnderloadException.class)
-	public void underloadIsNotAllowed() throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException{
+	public void underloadIsNotAllowed() throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException, InsufficientPrerequisitesException{
 		Section math1Section = new Section(1, math1, mondayAtTen, mrNarwhal);
 		ClassCard cc1 = new ClassCard(1, student, math1Section);
 		
@@ -91,51 +104,62 @@ public class EnrollmentTest {
 	}
 	
 	@Test (expected = OverloadException.class)
-	public void overloadIsNotAllowed() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException {
+	public void overloadIsNotAllowed() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException, InsufficientPrerequisitesException {
 		firstTermEnrollmentForm = student.startEnrollment();
-		addTooManyClasscardsToEnrollmentForm();
+		addTooManyClassCardsToEnrollmentForm(firstTermEnrollmentForm);
 		student.addNewEnrollmentForm(firstTermEnrollmentForm);
 	}
 	
-	private void addTooManyClasscardsToEnrollmentForm() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException {
-		firstTermEnrollmentForm = student.startEnrollment();
+	private void addTooManyClassCardsToEnrollmentForm(EnrollmentForm form) throws DuplicateSectionException, ScheduleConflictException, IneligibleStudentException, DuplicateClassCardException, NoClassCardException, UnderloadException, OverloadException, InsufficientPrerequisitesException {
+		add15UnitsToEnrollmentForm(form);
+		
+		Subject hist1 = new Subject("History 1");
+		Section hist1Section = new Section(14, hist1, tuesdayAtTwoThirty, mrNarwhal);
+		ClassCard cc7 = new ClassCard(7, student, hist1Section);
+		
+		Subject frch1 = new Subject("French 1");
+		Section frch1Section = new Section(15, frch1, tuesdayAtFour, mrNarwhal);
+		ClassCard cc8 = new ClassCard(8, student, frch1Section);
+		
+		form.addClassCard(cc7);
+		form.addClassCard(cc8);
+	}
+	
+	private void add15UnitsToEnrollmentForm(EnrollmentForm form) throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException, InsufficientPrerequisitesException {
 		
 		Subject psy1 = new Subject("Psychology 1");
 		Subject phlo1 = new Subject("Philosophy 1");
 		Subject eng1 = new Subject("English 1");
 		Subject bio1 = new Subject("Biology 1");
-		Subject hist1 = new Subject("History 1");
-		Subject frch1 = new Subject("French 1");
-		
-		Schedule tuesdayAtEightThirty = new Schedule(DaySlot.TueFri, TimeSlot.EightThirtyToTen);
-		Schedule tuesdayAtTen = new Schedule(DaySlot.TueFri, TimeSlot.TenToElevenThirty);
-		Schedule tuesdayAtElevenThirty = new Schedule(DaySlot.TueFri, TimeSlot.ElevenThirtyToOne);
-		Schedule tuesdayAtOne = new Schedule(DaySlot.TueFri, TimeSlot.OneToTwoThirty);
-		Schedule tuesdayAtTwoThirty = new Schedule(DaySlot.TueFri, TimeSlot.TwoThirtyToFour);
-		Schedule tuesdayAtFour = new Schedule(DaySlot.TueFri, TimeSlot.FourToFiveThirty);
 		
 		Section math1Section = new Section(1, math1, mondayAtTen, mrNarwhal);
 		Section psy1Section = new Section(10, psy1, tuesdayAtEightThirty, mrNarwhal);
 		Section phlo1Section = new Section(11, phlo1, tuesdayAtTen, mrNarwhal);
 		Section eng1Section = new Section(12, eng1, tuesdayAtElevenThirty, mrNarwhal);
 		Section bio1Section = new Section(13, bio1, tuesdayAtOne, mrNarwhal);
-		Section hist1Section = new Section(14, hist1, tuesdayAtTwoThirty, mrNarwhal);
-		Section frch1Section = new Section(15, frch1, tuesdayAtFour, mrNarwhal);
 		
 		ClassCard cc1 = new ClassCard(1, student, math1Section);
 		ClassCard cc3 = new ClassCard(3, student, psy1Section);
 		ClassCard cc4 = new ClassCard(4, student, phlo1Section);
 		ClassCard cc5 = new ClassCard(5, student, eng1Section);
 		ClassCard cc6 = new ClassCard(6, student, bio1Section);
-		ClassCard cc7 = new ClassCard(7, student, hist1Section);
-		ClassCard cc8 = new ClassCard(8, student, frch1Section);
+		
+		form.addClassCard(cc1);
+		form.addClassCard(cc3);
+		form.addClassCard(cc4);
+		form.addClassCard(cc5);
+		form.addClassCard(cc6);
+	}
+	
+	@Test (expected = InsufficientPrerequisitesException.class)
+	public void enrollWithoutMeetingPrerequisites() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException, InsufficientPrerequisitesException {
+		firstTermEnrollmentForm = student.startEnrollment();
+		add15UnitsToEnrollmentForm(firstTermEnrollmentForm);
+		
+		Subject math2 = new Subject("Math 2", math1);
+		Section math2Section = new Section(1, math2, mondayAtTwoThirty, mrNarwhal);
+		ClassCard cc1 = new ClassCard(1, student, math2Section);
 		
 		firstTermEnrollmentForm.addClassCard(cc1);
-		firstTermEnrollmentForm.addClassCard(cc3);
-		firstTermEnrollmentForm.addClassCard(cc4);
-		firstTermEnrollmentForm.addClassCard(cc5);
-		firstTermEnrollmentForm.addClassCard(cc6);
-		firstTermEnrollmentForm.addClassCard(cc7);
-		firstTermEnrollmentForm.addClassCard(cc8);
 	}
 }
