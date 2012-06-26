@@ -35,7 +35,7 @@ public class Subject {
 	}
 	
 	public List<Subject> getPrerequisites() {
-		return prerequisiteSubjects;
+		return new ArrayList<Subject>(prerequisiteSubjects);
 	}
 	
 	@Override
