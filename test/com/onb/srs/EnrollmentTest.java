@@ -89,21 +89,16 @@ public class EnrollmentTest {
 	
 	@Test (expected = UnderloadException.class)
 	public void underloadIsNotAllowed() throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException, DuplicateClassCardException, ScheduleConflictException{
-		assertEquals(0, student.getNumberOfEnrollmentForms());
-		
 		student.startEnrollment();
 		firstTermEnrollmentForm.addClassCard(cc1);
-		
 		student.addNewEnrollmentForm(firstTermEnrollmentForm);
-		assertEquals(0, student.getNumberOfEnrollmentForms());
 	}
 	
 	@Test (expected = OverloadException.class)
 	public void overloadIsNotAllowed() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException {
-		assertEquals(0, student.getNumberOfEnrollmentForms());
+		student.startEnrollment();
 		addTooManyClasscardsToEnrollmentForm();
 		student.addNewEnrollmentForm(firstTermEnrollmentForm);
-		assertEquals(0, student.getNumberOfEnrollmentForms());
 	}
 	
 	private void addTooManyClasscardsToEnrollmentForm() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException {
