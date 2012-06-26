@@ -38,4 +38,12 @@ public class Subject {
 		return prerequisiteSubjects;
 	}
 	
+	public boolean equals(Object o){
+		if (this == o) return true;
+		if (!(o instanceof Section)) return false;
+		Subject s = (Subject) o;
+		if (this.name == s.name) return true;
+		return false;
+	}
+	
 }

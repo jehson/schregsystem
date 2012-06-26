@@ -82,20 +82,14 @@ public class Student {
 	}
 	
 	public boolean hasPassedPrerequisitesOf(Subject subject) {
-		List<Subject> prerequisites = subject.getPrerequisites();
-		Subject s;
+		List<Subject> prerequisites = new ArrayList<Subject>();
+		prerequisites = subject.getPrerequisites();
 		boolean returnValue = true;
 		
-		if (prerequisites.size() == 0) return true;
-
-		for (Subject p : prerequisites) {
-			for (EnrollmentForm ef : enrollmentForms) {
-				for (ClassCard cc : ef.getClassCards()) {
-					s = cc.getSubject();
-					if (!(s == p && cc.getGrade().isPassing())) returnValue = false; 
-				}
-			}
+		if (prerequisites.size() == 0) return true;		
+		for (Subject s : prerequisites) {
+			if (!passedSubjects.contains(s)) returnValue = false;
 		}
-		return returnValue;	
+		return returnValue;			
 	}
 }
