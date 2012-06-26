@@ -166,4 +166,5 @@ public class EnrollmentTest {
 		
 		firstTermEnrollmentForm.addClassCard(math2cc);
 	}
+	
 }
