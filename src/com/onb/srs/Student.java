@@ -35,16 +35,12 @@ public class Student {
 	
 	public EnrollmentForm startEnrollment() throws IneligibleStudentException{
 		if(status.isEligible()){
-			evaluateStatus();
+			status.next(calculatePreviousAverageGrade(), getRemainingUnits());
 			return new EnrollmentForm(this);
 		}
 		else {
 			throw new IneligibleStudentException();
 		}
-	}
-	
-	public void evaluateStatus(){
-		this.status = Status.changeStatus(this);
 	}
 
 	public void addNewEnrollmentForm(EnrollmentForm enrollmentForm) throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException{

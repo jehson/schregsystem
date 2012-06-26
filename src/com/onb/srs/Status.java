@@ -6,12 +6,19 @@ public enum Status {
 		int getMinUnits(){ return 15; }
 		int getMaxUnits(){ return 18; }
 		boolean isEligible(){ return true; }
+		Status next(Grade prevAverageGrade, int remainingUnits){
+			return (prevAverageGrade.compareTo(PASSING_AVERAGE_GRADE)>=0)? CONTINUING : PROBATIONARY;
+		}
 	},
 	
 	CONTINUING {
 		int getMinUnits(){ return 18; }
 		int getMaxUnits(){ return 24; }
 		boolean isEligible(){ return true; }
+		Status next(Grade prevAverageGrade, int remainingUnits){
+			(prevAverageGrade.compareTo(PASSING_AVERAGE_GRADE)>=0)? CONTINUING : PROBATIONARY;
+			
+		}
 	},
 	
 	GRADUATING{
@@ -41,7 +48,8 @@ public enum Status {
 	abstract int getMinUnits();
 	abstract int getMaxUnits();
 	abstract boolean isEligible();
-
+	abstract Status next(Grade averageGrade, int remainingUnits);
+	
 	private final static Grade PASSING_AVERAGE_GRADE = Grade.C; 
 	private final static int GRADUATING_MIN_UNITS = 18;
 	
