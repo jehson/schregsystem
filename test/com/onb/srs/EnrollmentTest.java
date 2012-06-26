@@ -163,25 +163,25 @@ public class EnrollmentTest {
 	@Test
 	public void enrollToSubjectWithPrerequisites() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException, InsufficientPrerequisitesException {
 		Curriculum cs = setUpCSCurriculum();
-		Student fStudent = new Student(200837434, cs); 
+		student = new Student(200837434, cs); 
 		
-		firstTermEnrollmentForm = fStudent.startEnrollment();
-		add15UnitsToEnrollmentForm(firstTermEnrollmentForm, fStudent);
+		firstTermEnrollmentForm = student.startEnrollment();
+		add15UnitsToEnrollmentForm(firstTermEnrollmentForm, student);
 		
 		Subject frch1 = new Subject("French 1");
 		Section frch1Section = new Section(1, frch1, mondayAtFour);
-		ClassCard frch1cc = new ClassCard(1, fStudent, frch1Section);
+		ClassCard frch1cc = new ClassCard(1, student, frch1Section);
 		firstTermEnrollmentForm.addClassCard(frch1cc);
 		
 		for (ClassCard cc : firstTermEnrollmentForm.getClassCards()) {
 			cc.setGrade(Grade.A);
 		}
 		
-		EnrollmentForm secondTermEnrollmentForm = fStudent.startEnrollment();
+		EnrollmentForm secondTermEnrollmentForm = student.startEnrollment();
 		
 		Subject frch2 = new Subject("French 2", frch1);
 		Section frch2Section = new Section(1, frch2, mondayAtTwoThirty, mrNarwhal);
-		ClassCard frch2cc = new ClassCard(1, fStudent, frch2Section);
+		ClassCard frch2cc = new ClassCard(1, student, frch2Section);
 		
 		secondTermEnrollmentForm.addClassCard(frch2cc);
 	}
