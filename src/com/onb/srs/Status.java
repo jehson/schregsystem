@@ -1,7 +1,5 @@
 package com.onb.srs;
 
-import com.onb.srs.exceptions.IneligibleStudentException;
-
 public enum Status {
 	
 	NEW {
@@ -19,7 +17,7 @@ public enum Status {
 		boolean isEligible(){ return true; }
 		Status next(Grade prevAverageGrade, int remainingUnits){
 			return ((prevAverageGrade.compareTo(PASSING_AVERAGE_GRADE)>=0)?
-					( (remainingUnits<=18)?
+					( (remainingUnits<=GRADUATING_MIN_UNITS)?
 							(remainingUnits==0?GRADUATE:GRADUATING) : CONTINUING )
 					: PROBATIONARY);
 		}
@@ -71,37 +69,5 @@ public enum Status {
 	
 	private final static Grade PASSING_AVERAGE_GRADE = Grade.C; 
 	private final static int GRADUATING_MIN_UNITS = 18;
-	
-//	
-//	public static Status changeStatus(Student student){
-//		if(student.getNumberOfEnrollmentForms() == 0){
-//			return Status.NEW;
-//		}
-//		else {
-//			return changeOldStatus(student);
-//		}
-//	}
-//
-//	private static Status changeOldStatus(Student student){
-//		
-//		if(student.getRemainingUnits() == 0){
-//			return Status.GRADUATE;
-//		} else if(student.getRemainingUnits() <= GRADUATING_MIN_UNITS){
-//			return Status.GRADUATING;
-//		}
-//				
-//		Grade prevAverageGrade = student.calculatePreviousAverageGrade();
-//		//if student got less than passing average grade
-//		if(prevAverageGrade.compareTo(PASSING_AVERAGE_GRADE) < 0){
-//			if(student.getStatus() == Status.PROBATIONARY){
-//				return Status.INELIGIBLE;
-//			}
-//			else {
-//				return Status.PROBATIONARY;
-//			}	
-//		}
-//		
-//		return Status.CONTINUING;
-//	}
 	
 }
