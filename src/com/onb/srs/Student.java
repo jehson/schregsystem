@@ -40,6 +40,7 @@ public class Student {
 		else {
 			throw new IneligibleStudentException();
 		}
+		//return enrollment form
 	}
 	
 	public void evaluateStatus(){

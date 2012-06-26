@@ -15,26 +15,25 @@ import com.onb.srs.exceptions.SectionLimitExceededException;
 import com.onb.srs.exceptions.UnderloadException;
 
 public class EnrollmentTest {
-	Teacher mrNarwhal;
-	Teacher mrOcelot;
+	private Teacher mrNarwhal;
+	private Teacher mrOcelot;
 	
-	Subject math1;
-	Subject math2;
-	Subject eng1;
+	private Subject math1;
+	private Subject math2;
+	private Subject eng1;
 	
 	
-	Curriculum bsMath;
-	Student student;
-	Schedule schedule;
+	private Curriculum bsMath;
+	private Student student;
+	private Schedule schedule;
 	
-	Section math1SectionA;
-	Section math2SectionA;
+	private Section math1SectionA;
+	private Section math2SectionA;
 	
-	ClassCard cc1;
-	ClassCard cc2;
+	private ClassCard cc1;
+	private ClassCard cc2;
 
-	EnrollmentForm firstTermEnrollmentForm;
-	private Teacher mrMeerkat;
+	private EnrollmentForm firstTermEnrollmentForm;
 	
 	@Before
 	public void setUp() throws DuplicateSectionException, ScheduleConflictException {
@@ -78,13 +77,11 @@ public class EnrollmentTest {
 	
 	private void fillUpSection() throws SectionLimitExceededException, DuplicateClassCardException, IneligibleStudentException {
 		Student anotherStudent;
-		EnrollmentForm anotherFirstTermEnrollmentForm;
 		ClassCard anotherClassCard;
 		
 		for (int a = 0; a < 40; a++) {
 			anotherStudent = new Student(a, bsMath);
 			anotherStudent.startEnrollment();
-			anotherFirstTermEnrollmentForm = new EnrollmentForm(a, anotherStudent);
 			anotherClassCard = new ClassCard(a);
 			math1SectionA.addClassCard(anotherClassCard);
 		}
