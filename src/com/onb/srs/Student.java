@@ -33,14 +33,14 @@ public class Student {
 		return status;
 	}
 	
-	public void startEnrollment() throws IneligibleStudentException{
+	public EnrollmentForm startEnrollment() throws IneligibleStudentException{
 		if(status.isEligible()){
 			evaluateStatus();
+			return new EnrollmentForm(enrollmentForms.size() + 1, this);
 		}
 		else {
 			throw new IneligibleStudentException();
 		}
-		//return enrollment form
 	}
 	
 	public void evaluateStatus(){

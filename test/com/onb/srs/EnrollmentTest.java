@@ -55,12 +55,12 @@ public class EnrollmentTest {
 		cc1 = new ClassCard(1, student, math1SectionA);
 		cc2 = new ClassCard(2, student, math2SectionA);
 
-		firstTermEnrollmentForm = new EnrollmentForm(1, student);
+		//firstTermEnrollmentForm = new EnrollmentForm(1, student);
 	}
 	
 	@Test (expected = ScheduleConflictException.class)
 	public void ScheduleConflict() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException {		
-		student.startEnrollment();
+		firstTermEnrollmentForm = student.startEnrollment();
 		firstTermEnrollmentForm.addClassCard(cc1);
 		firstTermEnrollmentForm.addClassCard(cc2); //throws ScheduleConflictException
 	}
@@ -89,20 +89,20 @@ public class EnrollmentTest {
 	
 	@Test (expected = UnderloadException.class)
 	public void underloadIsNotAllowed() throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException, DuplicateClassCardException, ScheduleConflictException{
-		student.startEnrollment();
+		firstTermEnrollmentForm = student.startEnrollment();
 		firstTermEnrollmentForm.addClassCard(cc1);
 		student.addNewEnrollmentForm(firstTermEnrollmentForm);
 	}
 	
 	@Test (expected = OverloadException.class)
 	public void overloadIsNotAllowed() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException {
-		student.startEnrollment();
+		firstTermEnrollmentForm = student.startEnrollment();
 		addTooManyClasscardsToEnrollmentForm();
 		student.addNewEnrollmentForm(firstTermEnrollmentForm);
 	}
 	
 	private void addTooManyClasscardsToEnrollmentForm() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException {
-		student.startEnrollment();
+		firstTermEnrollmentForm = student.startEnrollment();
 		firstTermEnrollmentForm.addClassCard(cc1); 
 		
 		Subject psy1 = new Subject("Psychology 1");
