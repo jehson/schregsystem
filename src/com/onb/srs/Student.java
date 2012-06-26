@@ -36,7 +36,7 @@ public class Student {
 	public EnrollmentForm startEnrollment() throws IneligibleStudentException{
 		if(status.isEligible()){
 			evaluateStatus();
-			return new EnrollmentForm(enrollmentForms.size() + 1, this);
+			return new EnrollmentForm(this);
 		}
 		else {
 			throw new IneligibleStudentException();

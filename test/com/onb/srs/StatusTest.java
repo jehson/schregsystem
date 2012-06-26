@@ -154,11 +154,11 @@ public class StatusTest {
 		frch1Section = new Section(15, frch1, tuesdayAtFour, mrMeerkat);
 		
 		
-		enrollmentForm1 = new EnrollmentForm(1, student);
-		enrollmentForm2 = new EnrollmentForm(2, student);
-		enrollmentForm3 = new EnrollmentForm(3, student);
-		enrollmentForm4 = new EnrollmentForm(4, student);
-		enrollmentForm5 = new EnrollmentForm(5, student);
+		enrollmentForm1 = new EnrollmentForm(student);
+		enrollmentForm2 = new EnrollmentForm(student);
+		enrollmentForm3 = new EnrollmentForm(student);
+		enrollmentForm4 = new EnrollmentForm(student);
+		enrollmentForm5 = new EnrollmentForm(student);
 		
 		cc1 = new ClassCard(1, student, math1SectionA);
 		cc2 = new ClassCard(2, student, math2SectionA);
@@ -198,7 +198,7 @@ public class StatusTest {
 	
 	@Test 
 	public void continuingStudentEnrollment() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, UnderloadException, OverloadException{
-		EnrollmentForm enrollmentForm2 = new EnrollmentForm(2, student);
+		EnrollmentForm enrollmentForm2 = new EnrollmentForm(student);
 		student.startEnrollment();
 		enrollmentForm2.addClassCard(cc1);
 		student.addNewEnrollmentForm(enrollmentForm1);

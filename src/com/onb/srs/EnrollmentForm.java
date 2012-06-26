@@ -13,20 +13,13 @@ import com.onb.srs.exceptions.ScheduleConflictException;
 import com.onb.srs.exceptions.UnderloadException;
 
 public class EnrollmentForm {
-	private int id;
 	Student student;
 	List<ClassCard> classCards;
 	String term;
 	
-	public EnrollmentForm(int id){
-		this.id = id;
-		classCards = new ArrayList<ClassCard>();
-	}
-	
-	public EnrollmentForm(int id, Student student){
-		this(id);
+	public EnrollmentForm(Student student){
 		this.student = student;
-		//term = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+		classCards = new ArrayList<ClassCard>();
 	}
 	
 	protected void addClassCard(ClassCard classCard) throws DuplicateClassCardException, ScheduleConflictException{
