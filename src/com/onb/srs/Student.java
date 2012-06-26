@@ -97,14 +97,28 @@ public class Student {
 	}
 	
 	public boolean hasPassedPrerequisitesOf(Subject subject) {
-		List<Subject> prerequisites = new ArrayList<Subject>();
-		prerequisites = subject.getPrerequisites();
+		List<Subject> prerequisites = subject.getPrerequisites();
 		boolean returnValue = true;
 		
 		if (prerequisites.size() == 0) return true;		
 		for (Subject s : prerequisites) {
-			if (!passedSubjects.contains(s)) returnValue = false;
+			if (!passedSubjectsContains(s)) {
+				returnValue = false;
+				break;
+			}
 		}
 		return returnValue;			
+	}
+	
+	private boolean passedSubjectsContains(Subject subject) {
+		for (Subject s : passedSubjects) {
+			if (s.equals(subject)) return true;
+		}
+		return false;
+	}
+	
+	//delete later
+	public List<Subject> getPassedSubjects() {
+		return passedSubjects;
 	}
 }
