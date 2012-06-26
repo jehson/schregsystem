@@ -58,7 +58,8 @@ public class EnrollmentTest {
 	
 	@Test (expected = ScheduleConflictException.class)
 	public void ScheduleConflict() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException, InsufficientPrerequisitesException {		
-		firstTermEnrollmentForm = student.startEnrollment();
+		//firstTermEnrollmentForm = student.startEnrollment();
+		firstTermEnrollmentForm = new EnrollmentForm(student);	//Faking the enrollmentForm for now
 		
 		Section math1Section = new Section(1, math1, mondayAtTen, mrNarwhal);
 		Section eng1Section = new Section(2, eng1, mondayAtTen, mrOcelot);
@@ -76,7 +77,7 @@ public class EnrollmentTest {
 		fillUpSection(math1Section);
 		
 		Student extraStudent = new Student(41, bsMath);
-		extraStudent.startEnrollment();
+		//extraStudent.startEnrollment();
 		ClassCard extraClassCard = new ClassCard(41);
 		math1Section.addClassCard(extraClassCard);
 	}
@@ -87,8 +88,8 @@ public class EnrollmentTest {
 		
 		for (int a = 0; a < 40; a++) {
 			anotherStudent = new Student(a, bsMath);
-			anotherStudent.startEnrollment();
-			anotherClassCard = new ClassCard(a);
+			//anotherStudent.startEnrollment();
+			anotherClassCard = new ClassCard(a, anotherStudent, section);
 			section.addClassCard(anotherClassCard);
 		}
 	}
@@ -98,14 +99,16 @@ public class EnrollmentTest {
 		Section math1Section = new Section(1, math1, mondayAtTen, mrNarwhal);
 		ClassCard cc1 = new ClassCard(1, student, math1Section);
 		
-		firstTermEnrollmentForm = student.startEnrollment();
+		//firstTermEnrollmentForm = student.startEnrollment();
+		firstTermEnrollmentForm = new EnrollmentForm(student);	//Faking the enrollmentForm for now
 		firstTermEnrollmentForm.addClassCard(cc1);
 		student.addNewEnrollmentForm(firstTermEnrollmentForm);
 	}
 	
 	@Test (expected = OverloadException.class)
 	public void overloadIsNotAllowed() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException, InsufficientPrerequisitesException {
-		firstTermEnrollmentForm = student.startEnrollment();
+		//firstTermEnrollmentForm = student.startEnrollment();
+		firstTermEnrollmentForm = new EnrollmentForm(student);	//Faking the enrollmentForm for now
 		addTooManyClassCardsToEnrollmentForm(firstTermEnrollmentForm);
 		student.addNewEnrollmentForm(firstTermEnrollmentForm);
 	}
