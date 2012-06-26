@@ -2,29 +2,10 @@ package com.onb.srs;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-
-import org.junit.Before;
 import org.junit.Test;
 
-import com.onb.srs.exceptions.DuplicateClassCardException;
-import com.onb.srs.exceptions.DuplicateSectionException;
-import com.onb.srs.exceptions.IneligibleStudentException;
-import com.onb.srs.exceptions.NoClassCardException;
-import com.onb.srs.exceptions.OverloadException;
-import com.onb.srs.exceptions.ScheduleConflictException;
-import com.onb.srs.exceptions.UnderloadException;
-
 public class StatusTest {
-	
-	@Test
-	public void newStudentTriesToEnroll() throws IneligibleStudentException{
-		Curriculum curriculum = new Curriculum("BSCS");
-		Student student = new Student(1, curriculum);
-		assertNotNull(student.startEnrollment());
-		assertEquals(Status.NEW, student.getStatus());
-	}
-	
+		
 	@Test
 	public void NewToContinuing(){
 		assertEquals(Status.CONTINUING, Status.NEW.next(Grade.A, 24));
