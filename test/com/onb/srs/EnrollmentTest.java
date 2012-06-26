@@ -153,7 +153,8 @@ public class EnrollmentTest {
 	
 	@Test (expected = InsufficientPrerequisitesException.class)
 	public void enrollWithoutMeetingPrerequisites() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException, DuplicateSectionException, InsufficientPrerequisitesException {
-		firstTermEnrollmentForm = student.startEnrollment();
+		//firstTermEnrollmentForm = student.startEnrollment();
+		firstTermEnrollmentForm = new EnrollmentForm(student);
 		add15UnitsToEnrollmentForm(firstTermEnrollmentForm);
 		
 		Subject math2 = new Subject("Math 2", math1);
