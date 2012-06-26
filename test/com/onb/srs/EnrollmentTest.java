@@ -138,10 +138,4 @@ public class EnrollmentTest {
 		firstTermEnrollmentForm.addClassCard(cc7);
 		firstTermEnrollmentForm.addClassCard(cc8);
 	}
-	
-	/*
-	@Test (expected = InsufficientPrerequisitesException.class)
-	public void enrollingWithoutPrerequisites() {
-		Subject cs 123 = new 
-	}*/
 }

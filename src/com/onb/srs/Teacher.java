@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.onb.srs.exceptions.DuplicateSectionException;
+import com.onb.srs.exceptions.ScheduleConflictException;
 
 public class Teacher {
 	private int id;

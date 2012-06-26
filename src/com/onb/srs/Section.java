@@ -61,4 +61,34 @@ public class Section {
 	public int getNumberOfClassCards() {
 		return classCards.size();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Section)) return false;
+		Section s = (Section) o;
+		if (this.id == s.id) return true;
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + id;
+		return result;
+		
+	}
+	
+	public void assignNewTeacher(Teacher teacher) throws ScheduleConflictException, DuplicateSectionException {
+		if (teacher.getSections().contains(this)) {
+			throw new DuplicateSectionException("Teacher is already assigned this section");
+		} else if (teacher.hasClassAt(this.schedule)) {
+			throw new ScheduleConflictException("Teacher already has class at this schedule");
+		}
+		
+		this.teacher.removeSection(this);
+		teacher.addSection(this);
+		this.teacher = teacher;
+	}
 }
+

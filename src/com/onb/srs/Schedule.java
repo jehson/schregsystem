@@ -28,8 +28,8 @@ public class Schedule {
 	@Override
 	public int hashCode(){
 		int result = 17;
-		result = 37 * result + daySlot.toString().hashCode();
-		result = 37 * result + timeSlot.toString().hashCode();
+		result = 31 * result + daySlot.toString().hashCode();
+		result = 31 * result + timeSlot.toString().hashCode();
 		return result;
 	}
 	
