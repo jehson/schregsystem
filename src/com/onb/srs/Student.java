@@ -42,7 +42,7 @@ public class Student {
 			catch(NoPreviousRecordsException e){
 				status = Status.NEW;
 			}
-				return new EnrollmentForm(this);
+			return new EnrollmentForm(this);
 		}
 		else {
 			throw new IneligibleStudentException();
@@ -58,11 +58,7 @@ public class Student {
 			throw new IneligibleStudentException();
 		}
 	}
-	
-	private boolean hasPreviousRecords(){
-		return(enrollmentForms.size() != 0);
-	}
-	
+		
 	public EnrollmentForm getLastEnrollmentForm(){
 		return enrollmentForms.get(enrollmentForms.size()-1);
 	}
@@ -87,6 +83,10 @@ public class Student {
 			throw new NoPreviousRecordsException("Previous grades could not be found.");
 		}
 	}
+
+	private boolean hasPreviousRecords(){
+		return(enrollmentForms.size() != 0);
+	}
 	
 	public int getNumberOfEnrollmentForms(){
 		return enrollmentForms.size();
@@ -97,28 +97,14 @@ public class Student {
 	}
 	
 	public boolean hasPassedPrerequisitesOf(Subject subject) {
-		List<Subject> prerequisites = subject.getPrerequisites();
-		boolean returnValue = true;
-		
-		if (prerequisites.size() == 0) return true;		
-		for (Subject s : prerequisites) {
-			if (!passedSubjectsContains(s)) {
-				returnValue = false;
+		List<Subject> prerequisiteSubjects = subject.getPrerequisites();
+		boolean hasPassedPrereqs = true;
+		for (Subject prereqSubject : prerequisiteSubjects) {
+			if (!passedSubjects.contains(prereqSubject)) {
+				hasPassedPrereqs = false;
 				break;
 			}
 		}
-		return returnValue;			
-	}
-	
-	private boolean passedSubjectsContains(Subject subject) {
-		for (Subject s : passedSubjects) {
-			if (s.equals(subject)) return true;
-		}
-		return false;
-	}
-	
-	//delete later
-	public List<Subject> getPassedSubjects() {
-		return passedSubjects;
+		return hasPassedPrereqs;			
 	}
 }
