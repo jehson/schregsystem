@@ -58,7 +58,7 @@ public class Section {
 		return subject;
 	}
 
-	public boolean equalsSchedule(Section section){
+	public boolean sameSchedule(Section section){
 		return schedule.equals(section.getSchedule());
 	}
 	

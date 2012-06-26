@@ -15,10 +15,7 @@ public enum Status {
 		int getMinUnits(){ return 18; }
 		int getMaxUnits(){ return 24; }
 		boolean isEligible(){ return true; }
-		Status next(Grade prevAverageGrade, int remainingUnits){
-			(prevAverageGrade.compareTo(PASSING_AVERAGE_GRADE)>=0)? CONTINUING : PROBATIONARY;
-			
-		}
+		
 	},
 	
 	GRADUATING{

@@ -43,7 +43,7 @@ public class EnrollmentForm {
 	private boolean hasConflict(Section section1){
 		for(ClassCard c: classCards){
 			Section section2 = c.getSection(); 
-			if(section2.equalsSchedule(section1)){
+			if(section2.sameSchedule(section1)){
 				return true;
 			}
 		}

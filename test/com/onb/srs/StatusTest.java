@@ -25,11 +25,18 @@ public class StatusTest {
 		
 		Section[] sections = new Section[20];
 		for(int i=0; i<20; i++){
-			sections[i] = new Section[i];
+			sections[i] = new Section(i);
 		}
+		
+		ClassCard[] cards = new ClassCard[20];
+		for(int i=0; i<20; i++){
+			cards[i] = new ClassCard(i);
+		}
+		
 		Curriculum bsmath = new Curriculum("BS Math", subjects);
 		newStudent = new Student(1, bsmath);
 		EnrollmentForm eForm = newStudent.startEnrollment();
+		eForm.addClassCard(cards[0])
 		
 		
 	}
