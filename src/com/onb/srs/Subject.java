@@ -34,4 +34,8 @@ public class Subject {
 		return units;
 	}
 	
+	public List<Subject> getPrerequisites() {
+		return prerequisiteSubjects;
+	}
+	
 }

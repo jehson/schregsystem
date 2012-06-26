@@ -81,15 +81,21 @@ public class Student {
 		passedSubjects.add(subject);
 	}
 	
-	public boolean hasPassedSubject(Subject subject) {
+	public boolean hasPassedPrerequisitesOf(Subject subject) {
+		List<Subject> prerequisites = subject.getPrerequisites();
 		Subject s;
-		for (EnrollmentForm ef : enrollmentForms) {
-			for (ClassCard cc : ef.getClassCards()) {
-				s =  cc.getSubject();
-				
-				if (s == subject && cc.getGrade().isPassing()) return true; 
+		boolean returnValue = true;
+		
+		if (prerequisites.size() == 0) return true;
+
+		for (Subject p : prerequisites) {
+			for (EnrollmentForm ef : enrollmentForms) {
+				for (ClassCard cc : ef.getClassCards()) {
+					s = cc.getSubject();
+					if (!(s == p && cc.getGrade().isPassing())) returnValue = false; 
+				}
 			}
 		}
-		return false;	
+		return returnValue;	
 	}
 }

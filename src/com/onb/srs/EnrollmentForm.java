@@ -30,14 +30,10 @@ public class EnrollmentForm {
 		if (hasConflict(classCard.getSection())) {
 			throw new ScheduleConflictException();
 		}
-		if () {
-			
+		if (!student.hasPassedPrerequisitesOf(classCard.getSubject())) {
+			throw new InsufficientPrerequisitesException();
 		}
 		classCards.add(classCard);
-	}
-	
-	private boolean hasPassedPrerequisitesOf(Subject subject) {
-		
 	}
 		
 	protected List<ClassCard> getClassCards(){
