@@ -51,23 +51,23 @@ public class EnrollmentForm {
 	}
 	
 	public void validate() throws NoClassCardException, UnderloadException, OverloadException {
-		if (classCards.size() == 0){
+		if (classCards.size() == 0) {
 			throw new NoClassCardException();
-		} else if (studentIsUnderloaded()) {
+		} 
+		else if (studentIsUnderloaded()) {
 			throw new UnderloadException();
-		} else if (studentIsOverloaded()) {
+		} 
+		else if (studentIsOverloaded()) {
 			throw new OverloadException();
 		}
 	}	
 	
 	private boolean studentIsUnderloaded() {
-		if (getTotalUnits() < student.getStatus().getMinUnits()) return true;
-		else return false;
+		return getTotalUnits() < student.getStatus().getMinUnits();
 	}
-
+	
 	private boolean studentIsOverloaded() {
-		if (getTotalUnits() > student.getStatus().getMaxUnits()) return true;
-		else return false;
+		return getTotalUnits() > student.getStatus().getMaxUnits();
 	}
 	
 	private int getTotalUnits() {
@@ -76,19 +76,6 @@ public class EnrollmentForm {
 			totalUnits += cc.getSubject().getUnits();
 		}
 		return totalUnits;
-	}
-
-	protected void updateClassCardGrades(List<ClassCard> classCards){
-		this.classCards = classCards;
-	}
-	
-	public void setGrade(ClassCard classCard, Grade grade){
-		classCards.remove(classCard);
-		classCard.setGrade(grade);
-		classCards.add(classCard);
-		if(!(grade.equals(Grade.F))){
-			student.addPassedSubject(classCard.getSection().getSubject());
-		}
 	}
 	
 	public Grade getAverageGrade() {
