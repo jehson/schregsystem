@@ -26,4 +26,8 @@ public class Curriculum {
 		}
 		return totalUnits;
 	}
+	
+	public boolean hasSubject(Subject subject) {
+		return subjects.contains(subject);
+	}
 }

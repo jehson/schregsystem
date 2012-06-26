@@ -19,6 +19,9 @@ public class ClassCard {
 	
 	protected void setGrade(Grade grade){
 		this.grade = grade;
+		if (grade != Grade.F) {
+			student.addPassedSubject(this.getSubject());
+		}
 	}
 	
 	public Grade getGrade(){

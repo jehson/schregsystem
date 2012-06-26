@@ -38,12 +38,44 @@ public class Subject {
 		return prerequisiteSubjects;
 	}
 	
-	public boolean equals(Object o){
-		if (this == o) return true;
-		if (!(o instanceof Section)) return false;
-		Subject s = (Subject) o;
-		if (this.name == s.name) return true;
-		return false;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime
+				* result
+				+ ((prerequisiteSubjects == null) ? 0 : prerequisiteSubjects
+						.hashCode());
+		return result;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Subject other = (Subject) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (prerequisiteSubjects == null) {
+			if (other.prerequisiteSubjects != null)
+				return false;
+		} else if (!prerequisiteSubjects.equals(other.prerequisiteSubjects))
+			return false;
+		return true;
+	}
+	@Override
+	public String toString() {
+		return "Subject [name=" + name + ", units=" + units
+				+ ", prerequisiteSubjects=" + prerequisiteSubjects + "]";
+	}
+	
+	
 	
 }
