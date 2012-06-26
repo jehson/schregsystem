@@ -78,6 +78,10 @@ public class EnrollmentForm {
 		return totalUnits;
 	}
 
+	protected void updateClassCardGrades(List<ClassCard> classCards){
+		this.classCards = classCards;
+	}
+	
 	public void setGrade(ClassCard classCard, Grade grade){
 		classCards.remove(classCard);
 		classCard.setGrade(grade);

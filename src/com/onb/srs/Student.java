@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.onb.srs.exceptions.IneligibleStudentException;
 import com.onb.srs.exceptions.NoClassCardException;
+import com.onb.srs.exceptions.NoPreviousRecordsException;
 import com.onb.srs.exceptions.OverloadException;
 import com.onb.srs.exceptions.UnderloadException;
 
@@ -35,8 +36,13 @@ public class Student {
 	
 	public EnrollmentForm startEnrollment() throws IneligibleStudentException{
 		if(status.isEligible()){
-			status.next(calculatePreviousAverageGrade(), getRemainingUnits());
-			return new EnrollmentForm(this);
+			try {
+				status = status.next(calculatePreviousAverageGrade(), getRemainingUnits());
+			}
+			catch(NoPreviousRecordsException e){
+				status = Status.NEW;
+			}
+				return new EnrollmentForm(this);
 		}
 		else {
 			throw new IneligibleStudentException();
@@ -51,6 +57,10 @@ public class Student {
 		else {
 			throw new IneligibleStudentException();
 		}
+	}
+	
+	private boolean hasPreviousRecords(){
+		return(enrollmentForms.size() != 0);
 	}
 	
 	public EnrollmentForm getLastEnrollmentForm(){
@@ -68,9 +78,14 @@ public class Student {
 		return totalUnits - finishedUnits;
 	}
 	
-	public Grade calculatePreviousAverageGrade(){
-		EnrollmentForm lastEnrollmentForm = enrollmentForms.get(enrollmentForms.size()-1);
-		return lastEnrollmentForm.getAverageGrade();
+	public Grade calculatePreviousAverageGrade() throws NoPreviousRecordsException{
+		if(hasPreviousRecords()){
+			EnrollmentForm lastEnrollmentForm = enrollmentForms.get(enrollmentForms.size()-1);
+			return lastEnrollmentForm.getAverageGrade();
+		}
+		else {
+			throw new NoPreviousRecordsException("Previous grades could not be found.");
+		}
 	}
 	
 	public int getNumberOfEnrollmentForms(){
