@@ -73,24 +73,20 @@ public class EnrollmentTest {
 	@Test (expected = SectionLimitExceededException.class)
 	public void tooManyStudentsInSection() throws SectionLimitExceededException, DuplicateClassCardException, IneligibleStudentException, DuplicateSectionException, ScheduleConflictException{
 		Section math1Section = new Section(1, math1, mondayAtTen, mrNarwhal);
-		fillUpSection(math1Section);
+		Student anotherStudent;
+		ClassCard anotherClassCard;
+		
+		for (int i=0; i<40; i++) {
+			anotherStudent = new Student(i, bsMath);
+			anotherStudent.startEnrollment();
+			anotherClassCard = new ClassCard(i, anotherStudent, math1Section);
+			math1Section.addClassCard(anotherClassCard);
+		}
 		
 		Student extraStudent = new Student(41, bsMath);
 		extraStudent.startEnrollment();
 		ClassCard extraClassCard = new ClassCard(41);
 		math1Section.addClassCard(extraClassCard);
-	}
-	
-	private void fillUpSection(Section section) throws SectionLimitExceededException, DuplicateClassCardException, IneligibleStudentException {
-		Student anotherStudent;
-		ClassCard anotherClassCard;
-		
-		for (int a = 0; a < 40; a++) {
-			anotherStudent = new Student(a, bsMath);
-			anotherStudent.startEnrollment();
-			anotherClassCard = new ClassCard(a, anotherStudent, section);
-			section.addClassCard(anotherClassCard);
-		}
 	}
 	
 	@Test (expected = UnderloadException.class)
