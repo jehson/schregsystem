@@ -26,95 +26,102 @@ public class StatusTest {
 	}
 	
 	@Test
-	public void NewToContinuing() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException{
-		mock();
-		Student newStudent = createStudentWithPassingAverageGrade();
-		newStudent.startEnrollment();
-		assertEquals(Status.CONTINUING, newStudent.getStatus());
+	public void NewToContinuing(){
+		assertEquals(Status.CONTINUING, Status.NEW.next(Grade.A, 24));
+		assertEquals(Status.CONTINUING, Status.NEW.next(Grade.C, 24));
 	}
 	
 	@Test
-	public void NewToProbationary() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException {
-		Student newStudent = createStudentWithFailingAverageGrade();
-		newStudent.startEnrollment();
-		assertEquals(Status.PROBATIONARY, newStudent.getStatus());
+	public void NewToProbationary() {
+		assertEquals(Status.PROBATIONARY, Status.NEW.next(Grade.F, 24));
+		assertFalse(Status.PROBATIONARY == Status.NEW.next(Grade.C, 24));
+	}
+
+	@Test
+	public void ContinuingToGraduating(){
+		assertEquals(Status.GRADUATING, Status.CONTINUING.next(Grade.A, 18));
+		assertEquals(Status.GRADUATING, Status.CONTINUING.next(Grade.C, 9));
+		assertFalse(Status.GRADUATING == Status.CONTINUING.next(Grade.C, 19));
 	}
 	
-
-	
-	private Student createStudentWithPassingAverageGrade() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException{
-		Student newStudent = mock();
-		EnrollmentForm eForm = newStudent.getLastEnrollmentForm();	
-		List<ClassCard> classCards = eForm.getClassCards();
-		for(ClassCard classCard: classCards){
-			classCard.setGrade(Grade.A);
-		}
-		eForm.updateClassCardGrades(classCards);
-		return newStudent;
+	@Test
+	public void ContinuingToProbationary(){
+		assertEquals(Status.PROBATIONARY, Status.CONTINUING.next(Grade.F, 18));
+		assertEquals(Status.PROBATIONARY, Status.CONTINUING.next(Grade.F, 25));
+		assertFalse(Status.PROBATIONARY == Status.CONTINUING.next(Grade.C, 3));
 	}
 	
-	private Student createStudentWithFailingAverageGrade() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException{
-		Student newStudent = mock();
-		EnrollmentForm eForm = newStudent.getLastEnrollmentForm();	
-		List<ClassCard> classCards = eForm.getClassCards();
-		for(ClassCard classCard: classCards){
-			classCard.setGrade(Grade.F);
-		}
-		eForm.updateClassCardGrades(classCards);
-		return newStudent;
+	@Test
+	public void ContinuingToGraduate(){
+		assertEquals(Status.GRADUATE, Status.CONTINUING.next(Grade.A, 0));
+		assertEquals(Status.GRADUATE, Status.CONTINUING.next(Grade.C, 0));
+		assertFalse(Status.GRADUATE == Status.CONTINUING.next(Grade.A, 3));
 	}
 	
-	private Student mock() throws IneligibleStudentException, DuplicateClassCardException, ScheduleConflictException, NoClassCardException, UnderloadException, OverloadException{
-		Subject[] subjects = new Subject[18];
-		for(int i=0; i<18; i++){
-			subjects[i] = new Subject(String.valueOf(i));
-		}
-		Schedule[] monThuScheds = new Schedule[6];
-		for(int i=0; i<6; i++){
-			monThuScheds[i] = new Schedule(DaySlot.MonThu, TimeSlot.values()[i]);
-		}
-		
-		Schedule[] tueFriScheds = new Schedule[6];
-		for(int i=0; i<6; i++){
-			tueFriScheds[i] = new Schedule(DaySlot.TueFri, TimeSlot.values()[i]);
-		}
-		
-		Schedule[] wedSatScheds = new Schedule[6];
-		for(int i=0; i<6; i++){
-			wedSatScheds[i] = new Schedule(DaySlot.WedSat, TimeSlot.values()[i]);
-		}
-		
-		Section[] sections = new Section[18];
-		for(int i=0; i<6; i++){
-			sections[i] = new Section(i, subjects[i], monThuScheds[i%6]);
-		}
-		for(int i=6; i<12; i++){
-			sections[i] = new Section(i, subjects[i], tueFriScheds[i%6]);
-		}
-		for(int i=12; i<18; i++){
-			sections[i] = new Section(i, subjects[i], wedSatScheds[i%6]);
-		}
-		
-		Curriculum bsmath = new Curriculum("BS Math", subjects);
-		Student newStudent = new Student(1, bsmath);
-		
-
-		ClassCard[] cards = new ClassCard[18];
-		for(int i=0; i<18; i++){
-			cards[i] = new ClassCard(i, newStudent, sections[i]);
-		}
-		
-		EnrollmentForm eForm = newStudent.startEnrollment();
-
-		for(int i=0; i<5; i++){
-			eForm.addClassCard(cards[i]);
-		}
-
-		eForm.validate();
-		newStudent.addNewEnrollmentForm(eForm);
-		return newStudent;
+	@Test
+	public void ContinuingToContinuing(){
+		assertEquals(Status.CONTINUING, Status.CONTINUING.next(Grade.A, 25));
+		assertEquals(Status.CONTINUING, Status.CONTINUING.next(Grade.A, 19));
+		assertFalse(Status.CONTINUING == Status.CONTINUING.next(Grade.F, 18));
+		assertFalse(Status.CONTINUING == Status.CONTINUING.next(Grade.B, 0));
 	}
 	
+	@Test
+	public void ProbationaryToContinuing(){
+		assertEquals(Status.CONTINUING, Status.PROBATIONARY.next(Grade.C, 20));
+		assertFalse(Status.CONTINUING == Status.PROBATIONARY.next(Grade.C, 18));
+		assertFalse(Status.CONTINUING == Status.PROBATIONARY.next(Grade.F, 3));
+		assertFalse(Status.CONTINUING == Status.PROBATIONARY.next(Grade.B, 0));
+	}
 	
+	@Test
+	public void ProbationaryToIneligible(){
+		assertEquals(Status.INELIGIBLE, Status.PROBATIONARY.next(Grade.F, 20));
+		assertEquals(Status.INELIGIBLE, Status.PROBATIONARY.next(Grade.F, 18));
+		assertEquals(Status.INELIGIBLE, Status.PROBATIONARY.next(Grade.F, 3));
+		assertFalse(Status.INELIGIBLE == Status.PROBATIONARY.next(Grade.B, 15));
+		assertFalse(Status.INELIGIBLE == Status.PROBATIONARY.next(Grade.B, 0));
+	}
 	
+	@Test
+	public void ProbationaryToGraduating(){
+		assertEquals(Status.GRADUATING, Status.PROBATIONARY.next(Grade.C, 18));
+		assertFalse(Status.GRADUATING == Status.PROBATIONARY.next(Grade.B, 24));
+		assertFalse(Status.GRADUATING == Status.PROBATIONARY.next(Grade.F, 21));
+		assertFalse(Status.GRADUATING == Status.PROBATIONARY.next(Grade.F, 18));
+		assertFalse(Status.GRADUATING == Status.PROBATIONARY.next(Grade.B, 0));
+	}
+	
+	@Test
+	public void ProbationaryToGraduate(){
+		assertEquals(Status.GRADUATE, Status.PROBATIONARY.next(Grade.C, 0));
+		assertFalse(Status.GRADUATE == Status.PROBATIONARY.next(Grade.C, 3));
+	}
+	
+	@Test
+	public void GraduatingToProbationary(){
+		assertEquals(Status.PROBATIONARY, Status.GRADUATING.next(Grade.F, 18));
+		assertFalse(Status.PROBATIONARY == Status.GRADUATING.next(Grade.B, 0));
+	}
+	
+	@Test
+	public void GraduatingToGraduate(){
+		assertEquals(Status.GRADUATE, Status.GRADUATING.next(Grade.C, 0));
+		assertEquals(Status.GRADUATE, Status.GRADUATING.next(Grade.A, 0));
+	}
+	
+	@Test
+	public void noGraduatingToContinuing(){
+		assertFalse(Status.CONTINUING == Status.GRADUATING.next(Grade.B, 21));
+	}
+	
+	@Test
+	public void IneligibleToIneligible(){
+		assertEquals(Status.INELIGIBLE, Status.INELIGIBLE.next(Grade.C, 0));
+	}
+	
+	@Test
+	public void GraduateToGraduate(){
+		assertEquals(Status.GRADUATE, Status.GRADUATE.next(Grade.C, 0));
+	}	
 }
