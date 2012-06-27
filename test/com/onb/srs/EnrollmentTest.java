@@ -183,7 +183,11 @@ public class EnrollmentTest {
 		Section frch2Section = new Section(1, frch2, mondayAtTwoThirty, mrNarwhal);
 		ClassCard frch2cc = new ClassCard(1, student, frch2Section);
 		
-		secondTermEnrollmentForm.addClassCard(frch2cc);
+		try {
+			secondTermEnrollmentForm.addClassCard(frch2cc);
+		} catch (InsufficientPrerequisitesException e) {
+			fail("Prerequisites have already been met. InsufficientPrerequisitesException shouldn't have been thrown");
+		}
 	}
 	
 	private Curriculum setUpCSCurriculum() {
