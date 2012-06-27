@@ -56,6 +56,24 @@ public class EnrollmentTest {
 		eng58 = new Subject("English 1");
 	}
 	
+	@Test
+	public void enrollmentFormForEligibleStudent() throws IneligibleStudentException{
+		Student s = new Student(1, new Curriculum("BSCS"));
+		assertNotNull(s.startEnrollment());
+	}
+	
+	@Test (expected = IneligibleStudentException.class)
+	public void enrollmentFormForIneligibleStudent() throws IneligibleStudentException {
+		Student s = new Student(1, new Curriculum("BSCS"), Status.INELIGIBLE);
+		EnrollmentForm eform = s.startEnrollment();
+	}
+	
+	@Test (expected = IneligibleStudentException.class)
+	public void enrollmentFormForGraduateStudent() throws IneligibleStudentException {
+		Student s = new Student(1, new Curriculum("BSCS"), Status.GRADUATE);
+		EnrollmentForm eform = s.startEnrollment();
+	}
+
 	@Test (expected = ScheduleConflictException.class)
 	public void ScheduleConflict() throws IneligibleStudentException, NoClassCardException, DuplicateClassCardException, ScheduleConflictException, DuplicateSectionException, InsufficientPrerequisitesException {		
 		firstTermEnrollmentForm = student.startEnrollment();

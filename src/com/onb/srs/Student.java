@@ -26,6 +26,10 @@ public class Student {
 		status = Status.NEW;
 	}
 	
+	protected Student(int id, Curriculum curriculum, Status status){
+		this(id,curriculum);
+		this.status = status;
+	}
 	public Curriculum getCurriculum() {
 		return curriculum;
 	}
@@ -35,20 +39,29 @@ public class Student {
 	}
 	
 	public EnrollmentForm startEnrollment() throws IneligibleStudentException{
-		if(status.isEligible()){
-			try {
-				status = status.next(calculatePreviousAverageGrade(), getRemainingUnits());
-			}
-			catch(NoPreviousRecordsException e){
-				status = Status.NEW;
-			}
-			return new EnrollmentForm(this);
-		}
-		else {
+		evaluateStatus();
+		if(!status.isEligible()){
 			throw new IneligibleStudentException();
 		}
+		return new EnrollmentForm(this);
 	}
-
+	
+	private void evaluateStatus() throws IneligibleStudentException{
+		Status prevStatus = status;
+		Status evaluatedStatus;
+		if(!prevStatus.isEligible()){
+			throw new IneligibleStudentException("No need to proceed to status evaluation.");
+		}
+		try {
+			evaluatedStatus = prevStatus.next(calculatePreviousAverageGrade(), getRemainingUnits());
+		}
+		catch(NoPreviousRecordsException e){
+			//previous grade was not found, student must be new
+			evaluatedStatus = Status.NEW;
+		}
+		status = evaluatedStatus;
+	}
+	
 	public void addNewEnrollmentForm(EnrollmentForm enrollmentForm) throws IneligibleStudentException, NoClassCardException, UnderloadException, OverloadException{
 		if(status.isEligible()){
 			enrollmentForm.validate();
